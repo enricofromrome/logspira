@@ -3,5 +3,6 @@ logspira
 
 logaritmic spiral of sound 
 
-r
+
 first experiment on github
+for a software creating sounds
