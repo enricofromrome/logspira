@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<style>
+body {margin:0;font-size: 1.2em;}
+button {font-size: 1.2em; /* 30px/16=1.875em */}
+</style>
+<body>
+<script>
+//__________intro che serve a determinare costui e var di base________
+lista=[];spiaz=0
+function ricp(che){
+f=params.substr(che.length+params.indexOf(che))+"&"
+r=f.substr(0,f.indexOf("&"))
+if(params.indexOf(che)==-1){r=""}
+return r
+}
+const params = window.location.hash.substr(1);
+const arc = ricp("arc=");
+const inclusore = ricp("inclusore=");
+const qualeincl = ricp("qualeincl=");
+const babbo = ricp("babbo=");
+const qbab = ricp("qbab=");
+if (top.sys===undefined){ed=opener.sys;papi=opener}else{ed=top.sys;papi=top}
+edb=ed.edbsys
+//alert(arc+" "+inclusore+" "+qualeincl+" "+babbo+" "+qbab)
+if (babbo>0 && inclusore != ""){
+if (ed.d[babbo][qbab][0][inclusore][qualeincl][0]==undefined){ed.d[babbo][qbab][0][inclusore][qualeincl][0]=[]}
+if (ed.d[babbo][qbab][0][inclusore][qualeincl][0][arc]==undefined){ed.d[babbo][qbab][0][inclusore][qualeincl][0][arc]=[]}
+lista=ed.d[babbo][qbab][0][inclusore][qualeincl][0][arc]
+
+}
+if (babbo<1 && inclusore != ""){
+if (ed.d[inclusore][qualeincl][0]==undefined){ed.d[inclusore][qualeincl][0]=[]}
+if (ed.d[inclusore][qualeincl][0][arc]==undefined){ed.d[inclusore][qualeincl][0][arc]=[]}
+lista=ed.d[inclusore][qualeincl][0][arc]
+}
+if (inclusore==""){
+if(babbo<1){lista=ed.d[arc]}
+if(babbo>0){lista=ed.d[babbo][qbab][0][arc]}
+}
+//____________crea testa e titolo________
+var x = document.createElement("BUTTON");
+x.onclick=function(){chiudisch()}
+x.style="color:white;background-color: #f86;"
+var t = document.createTextNode("X");
+  x.appendChild(t);
+  document.body.appendChild(x);
+  
+var x = document.createElement("SPAN");
+chisono=""
+if (babbo*1){chisono=ed.edbsys[0][babbo][2]+": "+ed.d[babbo][qbab][1]+ " - "}
+if (inclusore*1){
+chisono+=ed.edbsys[0][inclusore][2];
+if (babbo*1){chisono+=": "+ed.d[babbo][qbab][0][inclusore][qualeincl][1]+ " - "}
+else{chisono+=": "+ed.d[inclusore][qualeincl][1]+ " - "}
+}
+x.style="color:white;"
+x.id="intesta"
+var t = document.createTextNode(" "+chisono+" "+ed.edbsys[0][arc][2]+" - "+(lista.length-1));
+  x.appendChild(t);
+document.body.appendChild(x);
+var x = document.createElement("BR");document.body.appendChild(x);
+
+function chiudisch(){
+f=location.hash.replace("#","")
+//atob - btoa x decod
+if(top.telef==1){
+top.chiudi(f)} else {window.close()}
+}
+//_____________________crea div e canvas____________________
+var x = document.createElement("DIV");
+ld=window.innerWidth-60
+larg=(ed.edbsys[arc].length-1)*125
+if (ld>larg){ld=larg}
+x.style="height:400px;width:"+ld+"px;overflow:auto;float: left;"
+x.id="divv"
+var y = document.createElement("CANVAS");
+y.id="canvas"
+y.height=380
+
+y.width=larg
+y.addEventListener("wheel", ruom, {passive: false});
+function ruom(event){
+if(event.deltaY>0 && spiaz<scrolla.max){scrolla.value --;spiaz ++;pagina()};
+if(event.deltaY<0 && spiaz>0){scrolla.value ++;spiaz--;pagina()}};
+// hai cliccato il canvas_____________________
+y.onclick = function(ev){
+pags=spiaz+1+Math.floor((ev.offsetY-50)/30)
+cmps=1+Math.floor((ev.offsetX)/125)
+//alert(pags+" "+cmps) 
+if (pags>0 && ev.offsetY>=50 && ev.offsetY<=350 && pags<lista.length){
+sd="legdb2.htm#arc="+arc+"&questo="+pags+"&babbo="+babbo+"&qbab="+qbab
+if (inclusore){sd+="&inclusore="+inclusore+"&qualeincl="+qualeincl;apri(sd)}
+else {top.apri(sd)}
+
+//if(top.telef==1){top.chiudi(f)} else {window.close()}
+}
+}
+
+
+x.style.width=ld
+x.appendChild(y);
+  document.body.appendChild(x);
+//_____________________crea barra verticale__________
+var x = document.createElement("INPUT");
+x.setAttribute("id", "scrolla");
+x.setAttribute("type", "range");
+x.setAttribute("orient", "vertical");
+x.setAttribute("min", 0);
+var maxscroll = lista.length-11
+x.setAttribute("max", maxscroll);
+x.setAttribute("value", maxscroll);
+x.setAttribute("style","-webkit-appearance: slider-vertical;cursor: pointer;height:380px;width:40px;float: left;")
+x.oninput = function(){spiaz=lista.length-parseInt(this.value)-11;pagina()};
+x.onchange = function(){spiaz=lista.length-parseInt(this.value)-11;pagina()};
+document.body.appendChild(x);
+
+
+var x = document.createElement("BUTTON");
+x.onclick=function(){
+if (lista.length==0){lista[0]=[]}
+nuovo=lista.length
+lista[nuovo]=[]
+scrolla.max=lista.length-11;
+scrolla.value=0;
+if (scrolla.max>0){spiaz =parseInt(scrolla.max);}
+pagina()
+sd="legdb2.htm#arc="+arc+"&questo="+nuovo+"&babbo="+babbo+"&qbab="+qbab
+if (inclusore){sd+="&inclusore="+inclusore+"&qualeincl="+qualeincl;apri(sd)}
+else {top.apri(sd)}
+}
+x.style="position: absolute;left: 0px;bottom:60px;color:white;background-color: #6f7;"
+var t = document.createTextNode("+");
+  x.appendChild(t);
+  document.body.appendChild(x);
+var x = document.createElement("br");document.body.appendChild(x);
+var x = document.createElement("BUTTON");
+x.onclick=function(){alert("nuovo uguale!")}
+x.style="position: absolute;left: 40px;bottom:60px;color:white;background-color: #6f7;"
+var t = document.createTextNode("+=");
+  x.appendChild(t);
+  document.body.appendChild(x);
+//____________________disegna
+var ctx = y.getContext("2d");
+
+ctx.fillStyle = ed.edbsys[0][arc][7];
+ctx.fillRect(0, 0, larg, 395);
+
+
+
+function etichetta(abc,spiax,spiay,dimx,dimy,fg,bk){
+ctx.fillStyle = bk
+ctx.fillRect(spiax, spiay, dimx,dimy)
+ctx.globalAlpha=1
+ctx.font = "18px Arial"
+ctx.fillStyle = fg
+if (isNaN(abc)){ctx.textAlign = "left";uff=0}else{ctx.textAlign = "right";uff=dimx-1}
+ctx.fillText(abc, spiax+uff,spiay+dimy-5,dimx)
+}
+
+for (var r = 1, n = ed.edbsys[arc].length; r < n; r++) 
+{
+titolo=ed.edbsys[arc][r][2]
+if(titolo==undefined){titolo=""}
+spiax=((r-1)*125)+2
+etichetta(titolo.substr(0,30),spiax,0,120,25,"black","white")
+}
+
+function pagina(){
+intesta.textContent=" "+chisono+" "+ed.edbsys[0][arc][2]+" - "+(lista.length-1)
+ctx.fillStyle = ed.edbsys[0][arc][7];
+ctx.fillRect(0, 30, larg, 365);
+for (var rig = 1,ny = 10;rig <= ny;rig++){
+for (var r = 1, n = ed.edbsys[arc].length; r < n; r++) 
+{
+if ((rig+spiaz) < lista.length){
+titolo=lista[rig+spiaz][r]
+if(titolo==undefined){titolo=""}
+if (Array.isArray(titolo)){ttt=titolo.length}else{
+if (isNaN(titolo)){ttt=titolo.substr(0,25)}else{ttt=titolo}}
+spiax=((r-1)*125)+2
+spiay=(rig*30)+20
+etichetta(ttt,spiax,spiay,120,25,"black","white")
+}}
+}}
+pagina()
+setInterval(function(){ pagina(); }, 300);
+
+function chiudi(){
+iframe=document.getElementById("dett")
+document.body.removeChild(iframe);
+}
+function apri(cosa){
+var iframe = document.createElement('iframe');
+    iframe.id="dett"
+    iframe.title="EdB"
+    iframe.style.position="fixed"
+    iframe.style.width=window.innerWidth + "px"
+    iframe.style.height=window.innerHeight + "px"
+    iframe.style.top=0 + "px"
+    iframe.style.left=0 + "px"
+    iframe.style.padding=0 + "px"
+    iframe.style.backgroundColor = "black"
+    iframe.style.border="none"
+    iframe.src = cosa;
+    document.body.appendChild(iframe);console.log("caricato " + iframe.id)
+}
+</script>
+
+</body>
+
+</html>

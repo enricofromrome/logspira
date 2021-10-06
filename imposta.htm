@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<head><title>edb 2020</title><meta charset="UTF-8"></head>
+<script>
+
+</script>
+<body>
+<h1><p id="info" style="color:#ffdd00;" ></p></h1>
+<button  style="color:white;background-color: #6f7;font-size: 32px; text-align: center;width: 100px" onclick="top.chiudi('imposta')">X</button>
+<button  style="color:black;background-color: #fff;font-size: 32px; text-align: center;width: 100px" onclick="salva()">⇩</button>
+<button  style="color:white;background-color: #a00;font-size: 32px; text-align: center;width: 100px" onclick="uccidi()">☠</button>
+<br><hr>
+ <span style="color:#ffdd00;font-size:xx-large;">⇧<input type="file" id="fileUpload" onchange='carica(event)'  accept='application/json' /></span><br><hr>
+<p id="testo" style="color:#ffdd00;"></p>
+<a id="downloadAnchorElem" style="display:none"></a>
+</body>
+<script>
+elesys=""
+var nomeimp=""
+w = new Worker("./handleDb.js");
+init=1;sys={}
+w.onmessage = function(event) {
+if(init==3){
+
+top.location.reload()
+}
+if (init==2){
+sys=JSON.parse(event.data)
+elesys=sys
+for (k=0;k<sys.length;k++){
+if(sys[k][0]!==top.sys.name){
+document.getElementById("testo").innerHTML += "<button onclick='w.postMessage([\"leggiuno\",\""+sys[k][0]+"\"]);localStorage.corsys=JSON.stringify(\""+sys[k][0]+"\");'>"+sys[k][0]+"</button><br>";}}
+init=3;
+
+//if (sys.length==1){w.postMessage(["leggiuno",sys[0][0]]);}
+}
+if (init==1){init=2;fallo()}
+}
+w.postMessage(["init"]);
+function fallo(){w.postMessage(["readAll"]);}
+function ammazza(){w.postMessage(["uccidi",top.sys.name]);}
+//_______________________________________________________________
+document.getElementById("info").innerText="📌" + top.sys.name
+
+function salva(){
+var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(top.sys));
+var dlAnchorElem = document.getElementById('downloadAnchorElem');
+dlAnchorElem.setAttribute("href",     dataStr     );
+dlAnchorElem.setAttribute("download", top.sys.name+".json");
+dlAnchorElem.click();
+}
+function uccidi(){
+var rame = document.createElement("DIV");
+    rame.id="dialogo"
+    rame.style.position="fixed"
+    rame.style.width=window.innerWidth + "px"
+    rame.style.height=window.innerHeight + "px"
+    rame.style.top=0 + "px"
+    rame.style.padding=0 + "px"
+    rame.style.backgroundColor = "#400"
+    rame.style.color = "#eff"
+    rame.style.border="none"
+    rame.style.fontSize="x-large"
+    zz="<h1>kill "+top.sys.name+"?<br><br><br><br><br><br>" 
+    zz+="<span style='color: red;' onclick='ammazza()'>😱Yes</span> - <span style='color: lightgreen;' onclick='chiudidialogo()'>🌈No</span></h1>"
+    rame.innerHTML=zz
+    document.body.appendChild(rame);
+}
+
+function chiudidialogo(){
+rame=document.getElementById('dialogo'); document.body.removeChild(rame);
+}
+//________________________UPLOAD JSON_______________________________
+function carica(e) {
+    
+    var files = e.target;
+  console.log(files);
+  if (files.length <= 0) {
+    alert("sticazzi")
+    return false;
+    
+  }
+
+  var fr = new FileReader();
+
+  fr.onload = function(e) { 
+  console.log(e);
+    var result = JSON.parse(e.target.result);
+    nomeimp=result.name
+    elesys.forEach(function(a){if(a[0]==nomeimp){result.name=nomeimp+Date.now()}})
+    
+    alert("⇧ "+result.name)
+        top.sys=result
+        top.slv.style.backgroundColor="Tomato"
+        top.chiudi('imposta')
+  }
+  
+fr.readAsText(files.files[0]);
+};
+
+</script>
+</body>
+</html>

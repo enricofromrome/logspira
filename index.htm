@@ -1,0 +1,303 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>edb 2021</title>
+<meta name="theme-color" content="#7E7EFB"/>
+<meta name=viewport content="width=device-width, initial-scale=1.0">
+<meta name="Description" content="data binder, Category: Progressive Web App">
+<link rel="manifest" href="manifest.json"> 
+<meta charset="UTF-8">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" sizes="36x36" href="launcher-icon-0-75x.png">
+<link rel="apple-touch-icon" href="launcher-icon-5x.png">
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<!--
+Copyright (c) 2021 Enrico de Bernart
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+--> 
+
+<style>
+body {margin:0;font-size: 1em; /* 30px/16=1.875em */
+    user-select: none; /* Standard syntax */
+    background: #000000;
+}
+button {font-size: 2em; /* 30px/16=1.875em */}
+.sopra {display: none;
+position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+overflow-y: auto;
+background-color:red;
+}
+      input { background-color:white; color:blue;  font:14px courier new; border:3px outset gold; }
+      input:focus {background-color:yellow; color:red; }
+      select { background-color:white; color:blue;  font:14px courier new; border:3px outset gold; }
+      select:focus {background-color:yellow; color:red; }
+      
+form.html5-form {
+  max-width: 350px;
+}
+
+.indice { background-color:#ffffff; color:blue;  font:24 px monospace;
+width: 95%;max-width: 350px;
+    height: 180px;padding-top: 0px; padding-bottom: 0px;white-space: nowrap;
+    overflow-y: scroll;
+    overflow-x:hidden;cursor:pointer
+}
+
+</style>
+<script>
+storia=[]
+telef=1
+if (screen.height>screen.width){telef=1}
+if (location.hash.match("telef;")){telef=1}
+fa=[];// finestre aperte
+m=[];// m=struttura menu
+sys={};// ciapa un sistema
+var j = 0; 
+function counterImg() { j++; return j; }
+function carica(chi,quale){
+questo=m[chi]
+console.log("caricato "+chi + " "+Date.now())
+ctx.drawImage(promesse[quale],questo[3], questo[4], questo[5],questo[6])
+}
+
+
+function carimm(files){
+for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        var count = counterImg()-1;
+        
+        setTimeout((function (preview, surface, count) {
+            return function (e) {
+            promesse[count] = new Image()
+            promesse[count].src=m[files[count]][2]
+            promesse[count].onload = function() {carica(files[count],count)}
+            //console.log("Scoped " + files[count]);    
+            }
+        })(0, 0, count), 5);
+
+}}
+
+</script>
+</head>
+<body>
+<table border="0" style="position: sticky;color:white;background-color: #C43;width:100%; max-width: 400px;top: 0px;right:1;border-style: none;"><tbody><tr>
+<td id="b3" style="color:white;background-color: #fff;font-size: 32px; text-align: center" width="20%" onclick="window.open('../','','resizable,scrollbars,status')"><img src="launcher-icon-0-75x.png" /></td>
+<td id="gear" style="font-size: 32px; text-align: center;color:black;background-color: white;"  onclick="idbsys('imposta')" width="20%">⚙</td>
+<td id="slv" style="font-size: 32px; text-align: center;color:black;background-color: white;"  onclick="salva()" width="20%">💾</td>
+  <td id="b4" style="color:black;background-color: #fff;font-size: 32px; text-align: center" width="20%" onclick="window.open('about.htm','','resizable,scrollbars,status')">?</td>
+</tr></tbody></table>
+<canvas id="canvas" width="360px" height="510px" onclick="clickcanv(event)"></canvas><br>
+
+
+<script>
+  var canvas = document.getElementById('canvas')
+        ctx = canvas.getContext('2d')
+
+  var img=document.createElement('img'); 
+  imgs=[]     
+menu=0
+promesse=[]
+
+
+//___________________________disegna_________________
+function disegna(qq){
+j=0
+  q=qq
+imgs=[]
+promesse=[]
+ctx.clearRect(0, 0, canvas.width, canvas.height)
+ctx.fillStyle = "#000"
+ctx.globalAlpha=0.8;
+ctx.shadowBlur=8;
+ctx.shadowOffsetX=3;
+ctx.shadowOffsetY=3;
+ctx.shadowColor="black";
+ctx.lineCap="round"
+
+for (var r = 1, n = m.length; r < n; r++) {
+questo= m[r]
+if(questo[0]==q){
+ctx.globalAlpha=.4
+ctx.fillStyle = questo[8]
+larg=questo[5];lung=questo[6]
+if(isNaN(questo[5])){pc=questo[5];larg=eval(pc.substr(0,pc.length-1)*window.innerWidth/100)}
+if(questo[5]<0){pc=questo[5]*-1;larg=pc*window.innerWidth/100}
+if(isNaN(questo[6])){pc=questo[6];lung=eval(pc.substr(0,pc.length-1)*window.innerHeight/100)}
+if(questo[6]<0){pc=questo[6]*-1;lung=pc*window.innerHeight/100}
+ctx.fillRect(questo[3], questo[4], larg,lung)
+ctx.globalAlpha=1
+ctx.font = "1.4em serif"
+ctx.fillStyle = questo[7]
+homen=""
+if(questo[1]!=undefined){homen=questo[1]}
+ctx.fillText(homen, questo[3],(questo[4] * 1)+22,larg)
+
+
+if(questo[2]!=undefined ){imgs.push(r) }
+}}
+carimm(imgs)
+}
+
+
+//_________________________scelto una cosa_______________________
+function clickcanv(evt)
+{chi=0
+co=m
+x=evt.offsetX;y=evt.offsetY
+for (r = 1, n = co.length; r < n; r++) {
+if (co[r][0]==menu){
+questo= co[r]
+dax=questo[3]*1;finx=questo[3]*1+questo[5]*1
+day=questo[4]*1;finy=questo[4]*1+questo[6]*1
+if (x>=dax && x<=finx && y>=day && y<=finy){chi=r}
+}}
+
+if (chi){
+cosa= m[chi][9]
+if (cosa!==undefined){
+if (cosa.search(".mn")>0){menu=cosa.substring(0,cosa.search(".mn"))*1;disegna(menu);}
+if (cosa.search(".htm")>0||cosa.search(".php")>0){
+nome=""
+if (cosa.search("base64")!==15){
+nome=cosa.replace(".","")
+cosa=cosa+"#"+nome
+}
+//if(screen.orientation.type[0]=="p"){
+if(telef==1){
+if (document.getElementById(nome)==null){
+var iframe = document.createElement('iframe');
+    iframe.id=nome
+    iframe.title="GetASys"
+    iframe.style.position="fixed"
+    iframe.style.width=window.innerWidth + "px"
+    iframe.style.height=window.innerHeight + "px"
+    iframe.style.top=0 + "px"
+    iframe.style.padding=0 + "px"
+    iframe.style.backgroundColor = "black"
+    iframe.style.border="none"
+    iframe.src = cosa;
+    document.body.appendChild(iframe);//console.log("caricato " + iframe.id)
+    } else {iframe=document.getElementById(nome)}
+    
+    iframe.style.visibility = "visible";iframe.style.opacity=100
+} else   
+{
+//alert(cosa)
+fa.push(window.open(cosa, "_blank" ,"width=" + window.width + ",height=" + window.height ))
+}
+}
+
+}}
+
+}
+
+function apri(cosa){
+nome=cosa.replace(".","")
+cosa=cosa+"&"+nome.substr(0,nome.indexOf("#"))
+var iframe = document.createElement('iframe');
+    iframe.id=cosa.substr(cosa.indexOf("#")+1)
+    iframe.title="EdB"
+    iframe.style.position="fixed"
+    iframe.style.width=window.innerWidth + "px"
+    iframe.style.height=window.innerHeight + "px"
+    iframe.style.top=0 + "px"
+    iframe.style.padding=0 + "px"
+    iframe.style.backgroundColor = "black"
+    iframe.style.border="none"
+    iframe.src = cosa;
+    document.body.appendChild(iframe);//console.log("caricato " + iframe.id)
+}
+function uccidi(f){
+nome=f.replace(".","")
+iframe=document.getElementById(nome)
+iframe.style.visibility = "hidden"
+}
+function nascondi(f){
+
+iframe=document.getElementById(f)
+iframe.style.opacity=0
+iframe.style.visibility="hidden"
+}
+function chiudi(f,ritorna,rit){
+fr=f;if (rit){fr=rit}
+nome=f
+if (f.indexOf("#")>=0){nome=f.substr(f.indexOf("#")+1)}
+iframe=document.getElementById(nome)
+document.body.removeChild(iframe);//console.log("scaricato " + iframe.id)
+
+if (storia.length>0){apri(storia[storia.length-1]);storia.pop()}
+if (ritorna){storia.push(fr)}
+
+
+}
+
+function salva(){idbsys("salvasys");
+document.getElementById('slv').style.backgroundColor="#FFF"}
+
+</script>
+
+
+</body>
+<script>
+window.onload = function() {
+document.getElementById('canvas').width=window.innerWidth
+document.getElementById('canvas').height=window.innerHeight-56
+//document.getElementById('btcl').style.bottom="8px"
+//document.getElementById('btcl').style.left="8px"
+disegna(menu)
+}
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('service-worker.js').then(function(registration) {
+      // Registration was successful
+      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+    }, function(err) {
+      // registration failed :(
+      console.log('ServiceWorker registration failed: ', err);
+    });
+  });
+}
+
+function idbsys(caggiafa){
+var iframe = document.createElement('iframe');
+    iframe.id=caggiafa
+    iframe.title="idbsys"
+    iframe.style.position="fixed"
+    iframe.style.width=window.innerWidth + "px"
+    iframe.style.height=window.innerHeight + "px"
+    iframe.style.top=0 + "px"
+    iframe.style.padding=0 + "px"
+    iframe.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'
+    iframe.style.border="none"
+    iframe.src = caggiafa+".htm";
+    document.body.appendChild(iframe);//console.log("caricato " + iframe.id)
+}
+if (m.length==0){
+console.log("pofferbacco non ho caricato un sistema!")
+idbsys("ciapasys")
+}
+
+</script>
+</html>

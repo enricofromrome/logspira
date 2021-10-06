@@ -1,0 +1,281 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>edb 2021</title>
+<meta name="theme-color" content="#7E7EFB"/>
+<meta name=viewport content="width=device-width, initial-scale=1">
+<link rel="manifest" href="manifest.json"> 
+<meta name="mobile-web-app-capable" charset="UTF-8" content="yes"/>
+<link rel="icon" sizes="36x36" href="launcher-icon-0-75x.png">
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<style>
+body {background-color:gray; color:blue;margin:0;font-size: 1em;
+}
+
+</style>
+<script>
+w = new Worker("suona.js")
+
+w.onmessage = function(event){
+  document.getElementById("result").innerHTML = event.data.length;
+  ris=event.data
+  sr="data:audio/wav;base64,"+ris
+  can.src=sr
+};
+
+
+edb=top.sys.edbsys
+cor=""
+
+function fallo(){
+
+}
+</script>
+</head>
+<p style="position: absolute;top: 550px;width: 90%;height:64px;overflow-x:scroll;white-space: nowrap;">
+  <button style="color:white;background-color: #f86;font-size: 2em; text-align: center"    onclick="nascondi()" width="20%">X</button> <button  style="font-size: 2em;" onclick="aho()">♫</button>
+  <button  id="bb1" style="color:white;background-color: black;font-size: 2em; text-align: center" onclick="bb1.style.backgroundColor='blue';bb2.style.backgroundColor='black';">⟱</button>
+ <button  id="bb2" style="color:white;background-color: blue;font-size: 2em; text-align: center" onclick="bb2.style.backgroundColor='blue';bb1.style.backgroundColor='black';">🎨</button>⏳⅟1
+<span id="result"></span>
+</p>
+<audio id='can' controls autoplay ontimeupdate="Avanzamento(this)" style='position: absolute;top: 620px;left:0px;width: 90%;background-color:#ffffff;height:28px;'></audio>
+</body>
+<script>
+larg=125
+totemp=0
+function aggiorna(){
+titolo=top.sys.d[2][top.sys.c[2]][1]
+document.getElementById("result").innerHTML =titolo.substr(0,40)
+bpm=top.sys.d[2][top.sys.c[2]][7]*1
+if (!bpm){bpm=60}
+if (!top.sys.d[2][top.sys.c[2]][0][4]){
+top.sys.d[2][top.sys.c[2]][0][4]=[]
+top.sys.d[2][top.sys.c[2]][0][4][0]=[]
+top.sys.d[2][top.sys.c[2]][0][4][1]=[[], '0', '1', '.1', '110', '110', '1']
+}
+tempo=top.sys.d[2][top.sys.c[2]][0][4]
+stru=""
+spartito=[]
+for (var i=1; i<tempo.length; i++) {
+  questo=tempo[i][1]*1+tempo[i][2]*1
+  if (totemp<questo){totemp=Math.ceil(questo)}
+  stostru="i"+"00000".substr(0,4-tempo[1][6].length)+tempo[i][6]
+  if (stru.indexOf(stostru)<0){stru+=stostru}
+  }
+  
+  lung=Math.ceil(((48000*60)/bpm)*totemp)
+
+larg=(stru.length/5)*160
+maxscroll=totemp
+
+y.width=larg
+x.setAttribute("max", maxscroll);
+x.setAttribute("value", maxscroll);
+ctx.fillRect(0, 0, larg, 510);
+for (var i=1; i<=stru.length/5; i++) {
+qvest=stru.substr(1+((i-1)*5),4)*1
+abc=top.sys.d[5][qvest][1]
+spiax=(i-1)*160
+etichetta(abc,spiax,0,158,30,"Tomato","#404442")
+}
+
+for (var ii=0; ii<(totemp+3); ii++) {
+for (var xii=0; xii<16; xii++) {
+neno=((ii*16)+xii)
+spartito[neno]=[]
+for (var zzi=0; zzi<((stru.length/5)*16); zzi++) {spartito[neno][zzi]=0}
+}}
+ordfre=[]
+for (var i=1; i<tempo.length; i++) {
+ttt=Math.round(tempo[i][4]).toString()
+ordfre[i-1]="0000000".substr(0,7-ttt.length)+ttt+";"+i
+}
+ordfre.sort()
+for (var i=0; i<ordfre.length; i++) {
+qtem=ordfre[i].substr(8,6)*1
+dadove=Math.round(tempo[qtem][1] % 1 * 15)+(Math.floor(tempo[qtem][1])*16)
+finoa=Math.round(tempo[qtem][2] % 1 * 15)+(Math.floor(tempo[qtem][2])*16)+dadove
+if (finoa==dadove){finoa=dadove+1}
+questru="i"+"00000".substr(0,4-tempo[qtem][6].length)+tempo[qtem][6]
+minspiazx=(stru.indexOf(questru)/5)*16
+nobuono=1
+while (nobuono==1)
+{
+tott=0
+for (var tttt=dadove;tttt<finoa;tttt++){tott+=spartito[tttt][minspiazx]}
+if (tott==0){
+for (var tttt=dadove;tttt<finoa;tttt++){spartito[tttt][minspiazx]=qtem}
+nobuono=0}else{minspiazx++}
+}
+}
+pagina()
+}
+function pagina(){
+ctx.fillStyle = "black"
+ctx.fillRect(0, 30,canvas.width,480)
+ctx.strokeStyle = "white"
+ctx.strokeRect(-1, 190,canvas.width+1,160)
+daba=Math.round(totemp-scrolla.value)*16
+finba=daba+47
+for (yyy=daba;yyy<=finba;yyy++){
+for (xxx=0;xxx<spartito[yyy].length;xxx++){
+if (spartito[yyy][xxx]>0){
+qsfreq=tempo[spartito[yyy][xxx]][4]
+ctx.fillStyle = dafreacol(qsfreq)
+ctx.fillRect((xxx*10), ((yyy-daba)*10)+30, 10,10)
+}}
+}
+}
+
+function dafreacol(ff){
+ww=21
+sat=Math.log2(ff)
+an=(sat % 1)
+ang=an*Math.PI*2
+g2=0;r2=0;b2=0
+if (an>=0 & an<=0.333333333){r2=1}
+if (an>=0.333333333333 & an<=0.66666666666){g2=1}
+if (an>=0.666666666666 & an<=1){b2=1}
+if (an>=0 & an<=0.1666666666666){b2=1-(an*6)}
+if (an>=0.1666666666666 & an<=0.3333333333){g2=((an-0.1666666666666)*6)}
+if (an>=0.3333333333 & an<=0.5){r2=1-((an-0.3333333333)*6)}
+if (an>=0.5 & an<=0.66666666666){b2=((an-0.5)*6)}
+if (an>=0.6666666666 & an<=0.833333333333){g2=1-((an-0.6666666666)*6)}
+if (an>=0.833333333333 & an<=1){r2=((an-0.833333333333)*6)}
+g3=Math.round((g2)*ww*sat)
+r3=Math.round((r2)*ww*sat)
+b3=Math.round((b2)*ww*sat)
+gre="0"+g3.toString(16)
+red="0"+r3.toString(16)
+blu="0"+b3.toString(16)
+
+cosimo="#"+red.slice(-2)+gre.slice(-2)+blu.slice(-2)
+return(cosimo)
+}
+//_____________________crea div e canvas____________________
+var x = document.createElement("DIV");
+x.style="height:530px;width:85%;overflow:auto;margin-left: 10px;float: left;"
+x.id="divv"
+var y = document.createElement("CANVAS");
+y.id="canvas"
+y.height=510
+//larg=(ed.edbsys[arc].length-1)*125
+
+y.addEventListener("wheel", ruom, {passive: false});//.onwheel = function(event){
+function ruom(event){
+if(event.deltaY>0 && scrolla.value<=maxscroll){scrolla.value --;pagina()};
+if(event.deltaY<0 && scrolla.value>=0){scrolla.value ++;pagina()};
+}
+// hai cliccato il canvas_____________________
+y.onclick = function(ev){
+xt=Math.floor((ev.x+divv.scrollLeft-10)/10)
+yt=Math.floor((ev.y-(y.offsetTop+30))/10)+(Math.floor(totemp-scrolla.value)*16)
+//prompt(spartito[yt][xt]+" "+xt+" "+yt)
+if (spartito[yt][xt]>0 & bb1.style.backgroundColor=="blue")
+{
+sd="legdb2.htm";
+sd=sd+"#arc=4&questo="+spartito[yt][xt]+"&babbo=2&qbab="+top.sys.c[2]
+nome=sd.replace(".","")
+nome=nome+"&"+nome.substr(0,nome.indexOf("#"))
+nome=nome.substr(nome.indexOf("#")+1)
+top.apri(sd)
+var myVar = setInterval(function(){ 
+if (top.document.getElementById(nome)==null)
+clearInterval(myVar);aggiorna()
+}, 100);
+//alert(top.document.getElementById(nome)==null)
+}
+if (bb2.style.backgroundColor=="blue")
+{
+sd="LST1.htm";
+if (spartito[yt][xt]){sd=sd+"#questo="+spartito[yt][xt]}
+else {s=stru.substr((Math.floor(xt/16)*5)+1,4)*1;sd=sd+"#tempo="+(yt/16)+"&strumento="+s}
+nome=sd.replace(".","")
+nome=nome+"&"+nome.substr(0,nome.indexOf("#"))
+nome=nome.substr(nome.indexOf("#")+1)
+top.apri(sd)
+var myVar = setInterval(function(){ 
+if (top.document.getElementById(nome)==null)
+clearInterval(myVar);aggiorna()
+}, 100);
+
+}
+}
+
+ld=window.innerWidth-60
+
+if (ld>larg){ld=larg}
+x.style.width=ld
+x.appendChild(y);
+  document.body.appendChild(x);
+//_____________________crea barra verticale__________
+var x = document.createElement("INPUT");
+x.setAttribute("id", "scrolla");
+x.setAttribute("type", "range");
+x.setAttribute("orient", "vertical");
+x.setAttribute("min", 0);
+//var maxscroll = lista.length-11
+
+x.setAttribute("style","-webkit-appearance: slider-vertical;cursor: pointer;height:530px;width:40px;float: left;")
+//x.oninput = function(){spiaz=lista.length-parseInt(this.value)-11;pagina()};
+x.onchange = function(){pagina()};
+document.body.appendChild(x);
+var ctx = y.getContext("2d");
+
+ctx.fillStyle = "black"
+
+
+function aho(){
+dafa={}
+dafa.bpm=bpm
+dafa.tempo=top.sys.d[2][top.sys.c[2]][0][4]
+dafa.timbri=top.sys.d[1]
+dafa.battuta=top.sys.d[3]
+instr=[]
+for (var ff=1;ff<top.sys.d[5].length;ff++){
+instr[ff]=[[],""]
+for (var fff=1;fff<top.sys.d[5][ff][0][6].length;fff++){
+instr[ff][fff]=top.sys.d[5][ff][0][6][fff]
+}
+}
+dafa.instr=instr
+w.postMessage(JSON.stringify(dafa))
+document.getElementById("result").innerHTML ="<span style='color:tomato;'>worker is working...</span>"
+}
+
+//--------------------------------------------------------
+function etichetta(abc,spiax,spiay,dimx,dimy,fg,bk){
+ctx.fillStyle = bk
+ctx.fillRect(spiax, spiay, dimx,dimy)
+ctx.globalAlpha=1
+ctx.font = "18px Arial"
+ctx.fillStyle = fg
+ctx.textAlign = "left"
+ctx.fillText(abc, spiax,spiay+dimy-5,dimx)
+}
+function nascondi(k){
+f="lsthtm"
+top.chiudi(f)}
+
+function Avanzamento(tanto){ndosto=maxscroll-Math.floor(((maxscroll*tanto.currentTime)/tanto.duration))+2
+if (ndosto!=scrolla.value){scrolla.value=ndosto;pagina()}
+}
+aggiorna()
+
+function logspi(caggiafa){
+var iframe = document.createElement('iframe');
+    iframe.id=caggiafa
+    iframe.title="idbsys"
+    iframe.style.position="fixed"
+    iframe.style.width=window.innerWidth + "px"
+    iframe.style.height=window.innerHeight + "px"
+    iframe.style.top=0 + "px"
+    iframe.style.padding=0 + "px"
+    iframe.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'
+    iframe.style.border="none"
+    iframe.src = caggiafa+".htm";
+    document.body.appendChild(iframe);//console.log("caricato " + iframe.id)
+}
+</script>
+</html>
+

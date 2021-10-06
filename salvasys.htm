@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<head><title>edb 2019</title><meta charset="UTF-8"></head>
+<script>
+w = new Worker("./handleDb.js");
+init=1;sis=""
+w.onmessage = function(event) {
+
+if (init==1){fallo();init=2;} 
+else 
+{sis=event.data;document.getElementById("info").innerHTML=sis
+if (sis=="aggiornato") {//top.chiudi("salvasys")
+document.getElementById("info").innerHTML="👍"
+}
+}
+}
+w.postMessage(["init"]);
+</script>
+<body><p id="testo" style="color:#ffdd00;">db:<br></p>
+<h1><p id="info" style="color:#ffdd00;"></p></h1>
+<button  style="color:white;background-color: #f86;font-size: 32px; text-align: center" onclick="top.chiudi('salvasys')">X</button>
+</body>
+<script>
+sy="sys"
+async function fallo(){await w.postMessage(["aggiorna",top.sys.name,top.sys]);console.log('dovrei aver salvato')}
+</script>

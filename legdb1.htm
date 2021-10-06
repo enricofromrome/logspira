@@ -1,0 +1,232 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>edb 2019</title>
+<meta name="theme-color" content="#7E7EFB"/>
+<meta name=viewport content="width=device-width, initial-scale=1">
+<link rel="manifest" href="manifest.json"> 
+<meta charset="UTF-8">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" sizes="36x36" href="launcher-icon-0-75x.png">
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<style>
+body {margin:0;font-size: 1em; /* 30px/16=1.875em */
+    user-select: none; /* Standard syntax */
+}
+button {font-size: 2em; /* 30px/16=1.875em */}
+.sopra {display: none;
+position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+overflow-y: auto;
+background-color:red;
+}
+      input { background-color:white; color:blue;  font:14px courier new; border:3px outset gold; }
+      input:focus {background-color:yellow; color:red; }
+      select { background-color:white; color:blue;  font:14px courier new; border:3px outset gold; }
+      select:focus {background-color:yellow; color:red; }
+      
+form.html5-form {
+  max-width: 350px;
+}
+
+.indice { background-color:#ffffff; color:blue;  font:24 px monospace;
+width: 95%;max-width: 340px;
+    height: 180px;padding-top: 0px; padding-bottom: 0px;white-space: nowrap;
+    overflow-y: scroll;
+    overflow-x:hidden;cursor:pointer
+}
+
+</style>
+<script>
+function ricp(che){
+f=params.substr(che.length+params.indexOf(che))+"&"
+return f.substr(0,f.indexOf("&"))
+}
+params = window.location.hash.substr(1);
+const arc = ricp("arc=");
+const quale = ricp("questo=");
+const babbo = ricp("babbo=");
+const qbab = ricp("qbab=");
+const funz = ricp("funz=");
+if (top.sys===undefined){ed=opener.sys;papi=opener}else{ed=top.sys;papi=top}
+edb=ed.edbsys
+strato=[];// edb=struttura d=dati c=corrente
+//console.log(ed.d)
+d=ed.d
+if (d===undefined){d=[]}
+c=ed.c
+if (c===undefined){c=[]}
+mydad=[]
+for (var r = 1, n = edb[0].length; r < n; r++) {mydad[r]=0;if(c[r]===undefined){c[r]=0}}
+
+for (var r = 1, n = edb[0].length; r < n; r++) {
+dax=edb[0][r][3]*1;finx=edb[0][r][3]*1+edb[0][r][5]*1
+day=edb[0][r][4]*1;finy=edb[0][r][4]*1+edb[0][r][6]*1
+for (var rr = r+1, nn = edb[0].length; rr < nn; rr++) {
+
+if ((edb[0][rr][3]*1)>=dax && (edb[0][rr][3]*1)<=finx && (edb[0][rr][4]*1)>=day && (edb[0][rr][4]*1)<=finy){mydad[rr]=r}
+}
+}
+questo=edb[0][arc]
+
+fidx=1
+for (var rr = 1, nn = edb[arc].length; rr < nn; rr++) {
+if (!edb[arc][rr][6]){edb[arc][rr][6]=""}
+if(edb[arc][rr][6].indexOf("!")>=0){fidx=rr}}
+</script>
+</head>
+<body style="">
+<div id="dettaglio" class="sopra">
+<form class="html5-form"  onsubmit="crea(); return false;">
+<span id="archiv"></span>: <input type="text" id="nuovo" pattern="[A-Z0-9 ']*" onkeyup="chiasu()" onchange="cambio()" autocomplete="off"/> 
+<input type="submit" style="font-size: 1.2em;" value="↗" />
+</form>
+<br>
+<div id='pippo' class="indice"></div>
+<button onclick="chiudidet()" style="color:white;background-color: #f86;width:160px;">X</button>
+</div>
+<script>
+
+ 
+//_________________________i_n_d_i_c_e_______________________
+
+document.getElementById("nuovo").value=""
+document.getElementById("pippo").innerHTML=""
+document.getElementById("dettaglio").style.display="block"
+document.getElementById("dettaglio").style.backgroundColor=questo[7]
+document.getElementById("archiv").innerText=questo[2] 
+
+idx=1
+
+
+aggpippo()
+
+//_____________________c_r_e_a_________________________________
+function crea(){
+xc = document.getElementById("nuovo").value
+if (xc.length>0){
+if (confirm("Crea " + xc +"?") == true) {
+top.slv.style.backgroundColor="Tomato"
+if (babbo==0){
+nuo=d[arc].length
+d[arc][nuo]=[]
+d[arc][nuo][0]=[]
+d[arc][nuo][idx]=xc
+}
+if (babbo>0){
+pap=babbo
+nuo=d[pap][qbab][0][arc].length
+d[pap][qbab][0][arc][nuo]=[]
+d[pap][qbab][0][arc][nuo][0]=[]
+d[pap][qbab][0][arc][nuo][idx]=xc
+if (fidx>idx){d[pap][qbab][0][arc][nuo][fidx]=""}
+}
+
+//deve scrivere la matrice a strato:3 dim x strato
+}
+aggpippo()
+}}
+//___________________A_G_G_p_I_p_p_o_______________
+function aggpippo(){
+bq=""
+richia=[]
+gente=[]
+//deve leggere la matrice a strato:3 dim x strato
+if (babbo==0){for (iiii = 1; iiii < d[arc].length;iiii++) {roba=""
+for (ccam= idx;ccam<=fidx;ccam++){roba+=d[arc][iiii][ccam].toUpperCase()+" "}
+richia[iiii-1]=roba+";"+iiii
+}}
+if (babbo>0){
+pap=babbo
+for (iiii = 1; iiii < d[pap][qbab][0][arc].length;iiii++) {roba=""
+for (ccam= idx;ccam<=fidx;ccam++){roba+=d[pap][qbab][0][arc][iiii][ccam].toUpperCase()+" "}
+richia[iiii-1]=roba+";"+iiii
+
+}}
+gente=richia.sort()
+
+iiii=0
+
+while (gente[iiii]) {
+finqui=gente[iiii].search(";")
+bq+="<span onclick='scelto(\"" + gente[iiii].slice(finqui+1) + "\")'>" + gente[iiii].slice(0,finqui) + "</span><br>";
+iiii++;
+}
+document.getElementById("pippo").innerHTML=bq
+
+}
+//_________________________________________________________
+
+function chiudidet(){
+if (funz=="scegli"){scelto("0")}
+else{
+f=location.hash.substr(1)
+//if (screen.orientation.type[0]=="p"){
+if(top.telef==1){
+top.chiudi(f)} else {window.close()}
+}}
+
+
+// SCRIPTS del puntatore lista_____________________________
+
+function cambio(){
+var x = document.getElementById("nuovo");
+x.value = x.value.toUpperCase();
+}
+function chiasu(){
+x = document.getElementById("nuovo")
+virt=x.value.toUpperCase()
+GIUSTO=0
+ALMEN=0
+ALPIU=gente.length -1
+while ((ALPIU-ALMEN)>1){
+GIUSTO=ALMEN+Math.floor(Math.random()*(ALPIU-ALMEN))
+nome=gente[GIUSTO]
+if(nome>virt){ALPIU=GIUSTO}else{ALMEN=GIUSTO}
+}
+document.getElementById("pippo").scrollTop=(ALMEN*(document.getElementById("pippo").scrollHeight/(document.getElementById("pippo").childElementCount/2)))
+//alert(virt)
+}
+
+function nascondi(){
+f="legdb1.htm"+location.hash
+//if (screen.orientation.type[0]=="p"){
+if(top.telef==1){
+top.chiudi(f,1)} else {window.close()}
+}
+
+document.body.style.backgroundColor = "black";
+//__________________________________SCELTO ovvero vai al 2
+function scelto(cosa){
+if (funz=="scegli"){parent.richiama(cosa)}
+else{
+if(mydad[arc]<1){
+if (c[arc]!=(cosa*1)){
+for (aii = 1; aii < mydad.length;aii++){if(mydad[aii]==arc){c[aii]=0}}}}
+c[arc]=cosa*1
+top.slv.style.backgroundColor="Tomato"
+sd="legdb2.htm";
+sd=sd+"#arc="+arc+"&questo="+cosa+"&babbo="+babbo+"&qbab="+qbab+"&funz=entra"
+top.apri(sd)
+nascondi()
+}}
+</script>
+
+
+
+
+<div id="scheda" class="sopra">
+<div id='pip2' class="indice" style="height:300px;"></div>
+<button onclick="chiudisch()" style="color:white;background-color: #f86;width:160px;">X</button>
+<div id='pip3'></div>
+</div>
+<div id="uncampo" class="sopra" style="top:40px;">
+<div id='pip4'></div>
+</div>
+</body>
+
+</html>
+

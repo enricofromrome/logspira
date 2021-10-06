@@ -1,0 +1,148 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>edb 2021</title>
+<meta name="theme-color" content="#7E7EFB"/>
+<meta name=viewport content="width=device-width, initial-scale=1">
+<link rel="manifest" href="manifest.json"> 
+<meta name="mobile-web-app-capable" charset="UTF-8" content="yes"/>
+<link rel="icon" sizes="36x36" href="launcher-icon-0-75x.png">
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<style>
+body {background-color:gray; color:blue;margin:0;font-size: 1em;
+}
+
+</style>
+<script>
+nn=0
+w = new Worker("suona.js")
+
+w.onmessage = function(event){
+  ris=event.data
+  sr="data:audio/wav;base64,"+ris
+  can.src=sr
+};
+ k=4.031360
+smt=12
+if (localStorage.semitoni){smt=localStorage.semitoni;if (smt<1){smt=12}}else{localStorage.semitoni=smt}
+if (localStorage.basetoni){k=(localStorage.basetoni*1)+4}else{localStorage.basetoni=k-4}
+
+
+bpm=60
+function aho(q){
+dafa={}
+dafa.bpm=bpm
+dafa.tempo=[]
+dafa.tempo[1]=[0,0,0.25,0.5,q,q,1]
+dafa.timbri=top.sys.d[1]
+dafa.battuta=top.sys.d[3]
+dafa.instr=[]
+dafa.instr[1]=top.sys.d[5][top.sys.c[5]][0][6]
+w.postMessage(JSON.stringify(dafa))
+}
+
+rosso=Math.PI*.6666666
+bleu=Math.PI*1.3333333
+ww=21
+
+function dafreacol(ff){
+sat=Math.log2(ff)
+an=(sat % 1)
+ang=an*Math.PI*2
+g2=0;r2=0;b2=0
+if (an>=0 & an<=0.333333333){r2=1}
+if (an>=0.333333333333 & an<=0.66666666666){g2=1}
+if (an>=0.666666666666 & an<=1){b2=1}
+if (an>=0 & an<=0.1666666666666){b2=1-(an*6)}
+if (an>=0.1666666666666 & an<=0.3333333333){g2=((an-0.1666666666666)*6)}
+if (an>=0.3333333333 & an<=0.5){r2=1-((an-0.3333333333)*6)}
+if (an>=0.5 & an<=0.66666666666){b2=((an-0.5)*6)}
+if (an>=0.6666666666 & an<=0.833333333333){g2=1-((an-0.6666666666)*6)}
+if (an>=0.833333333333 & an<=1){r2=((an-0.833333333333)*6)}
+g3=Math.round((g2)*ww*sat)
+r3=Math.round((r2)*ww*sat)
+b3=Math.round((b2)*ww*sat)
+gre="0"+g3.toString(16)
+red="0"+r3.toString(16)
+blu="0"+b3.toString(16)
+
+cosimo="#"+red.slice(-2)+gre.slice(-2)+blu.slice(-2)
+return(cosimo)
+}
+
+
+
+function nascondi(k){
+f="demoLSThtm"
+top.chiudi(f)}
+
+
+</script>
+
+<body>
+<button style="color:white;background-color: #f86;font-size: 32px; text-align: center"    onclick="nascondi()" width="20%">X</button>
+SMT<input id="semit" value="0" size="4" type="number" style="width:80px;color:white;background-color: black;font-size: 24px;" onchange="cambiato()">
+ BASE<input id="base" value="0" size="4" type="number" style="width:80px;color:white;background-color: black;font-size: 24px;" onchange="cambiato()">
+<br><br> - 
+<canvas id="canvas" width="360px" height="360px"></canvas>
+<br><p id="risult"></p>
+<audio id='can' controls='' autoplay='' style='position: absolute;top: 620px;width: 90%;background-color:#ffffff;height:28px;visibility:hidden;display: none;'>
+</body>
+
+<script>
+semit.value=smt
+base.value=k-4
+
+  var canvas = document.getElementById('canvas')
+        ctx = canvas.getContext('2d')
+        ctx.fillStyle = "black"
+ ctx.fillRect(0, 0, canvas.width, canvas.height)       
+ p=Math.PI
+
+setInterval(function(){acoso()}, 333);
+
+function acoso(){
+if (k<12){
+fq=Math.pow(2,k)
+aho(fq)
+if (fq>420 & fq<460){risult.innerHTML=fq+"<br>"}
+
+colore=dafreacol(Math.pow(2,k))
+sang=((Math.PI*2)/smt)/2.2
+daang=ang-sang
+fiang=ang+sang
+//sttp=(Math.PI/480)*sang
+sttp=0.02
+for (agn=daang;agn<=fiang;agn+=sttp){
+dax=(canvas.width/2)+(Math.sin(agn)*(sat-1)*15)
+day=(canvas.height/2)-(Math.cos(agn)*(sat-1)*15)
+ax=(canvas.width/2)+(Math.sin(agn)*(sat-.1)*15)
+ay=(canvas.height/2)-(Math.cos(agn)*(sat-.1)*15)
+linea(colore,4,dax,day,ax,ay)
+}
+k+=(1/smt)
+
+}
+}
+
+function cambiato(){
+if (semit.value<1){semit.value=12	}
+localStorage.semitoni=semit.value;
+localStorage.basetoni=base.value;
+ctx.fillStyle = "black"
+ ctx.fillRect(0, 0, canvas.width, canvas.height)
+smt=semit.value;k=4+(base.value*1)
+} 
+
+
+ function linea(colore,lar,dax,day,ax,ay) { 
+ ctx.beginPath();
+ctx.lineWidth = lar;   
+ctx.moveTo(dax, day);   
+//ctx.lineCap="round"; 
+ctx.lineTo(ax,ay); 
+ctx.strokeStyle = colore;
+ctx.stroke();
+}
+    
+</script>

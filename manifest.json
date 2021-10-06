@@ -1,0 +1,36 @@
+{
+  "name": "edbsys",
+  "short_name": "edb6",
+  "version": "6.0",
+  "manifest_version": 6,
+  "icons": [
+    {
+      "src": "launcher-icon-0-75x.png",
+      "sizes": "36x36",
+      "type": "image/png"  
+    },
+    {
+      "src": "launcher-icon-4x.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "launcher-icon-5x.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "launcher-icon-7x.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "index.htm",
+  "permissions": ["tabs"],
+  "prefer_related_applications": false,
+  "display": "fullscreen",
+  "orientation": "portrait",
+"background_color": "#7E7EFB",
+"theme_color": "#7E7EFB"
+}

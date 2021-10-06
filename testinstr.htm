@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>edb 2021</title>
+<meta name="theme-color" content="#7E7EFB"/>
+<meta name=viewport content="width=device-width, initial-scale=1">
+<link rel="manifest" href="manifest.json"> 
+<meta name="mobile-web-app-capable" charset="UTF-8" content="yes"/>
+<link rel="icon" sizes="36x36" href="launcher-icon-0-75x.png">
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<style>
+body {background-color:white; color:blue;margin:0;font-size: 1em;
+}
+
+</style>
+<script>
+w = new Worker("suona.js")
+
+w.onmessage = function(event){
+  document.getElementById("result").innerHTML = event.data.length;
+  ris=event.data
+  sr="data:audio/wav;base64,"+ris
+  can.src=sr
+};
+
+
+edb=top.sys.edbsys
+cor=""
+
+function fallo(){
+
+}
+</script>
+</head>
+<br><br>
+<div>Time 
+<body style="">
+<input id="Time" type="number" value="0" style="width:120px;" >
+</div>
+<br>
+<div>Length 
+<input id="Length" type="number" value="1" style="width:120px;" >
+</div>
+<br>
+<div>Strength 
+<input id="Strength" type="number" value="1" style="width:120px;" >
+</div>
+<br>
+<div>Pitch 
+<input id="Pitch" type="number" value="93" style="width:120px;" >
+</div>
+<br>
+<div>PitchTo 
+<input id="PitchTo" type="number" value="93" style="width:120px;" >
+</div>
+<br>
+<button onclick="aho()">TEST</button><p id="result"></p>
+<audio id='can' controls='' autoplay='' style='background-color:#000000;'></audio>
+</body>
+<script>
+
+bpm=60
+function aho(){
+dafa={}
+dafa.bpm=bpm
+dafa.tempo=[]
+dafa.tempo[1]=[0,Time.value*1,Length.value*1,Strength.value*1,Pitch.value*1,PitchTo.value*1,1]
+dafa.timbri=top.sys.d[1]
+dafa.battuta=top.sys.d[3]
+dafa.instr=[]
+dafa.instr[1]=top.sys.d[5][parent.cosa][0][6]
+w.postMessage(JSON.stringify(dafa))
+document.getElementById("result").innerHTML ="<span style='color:tomato;'>worker is working...</span>"
+}
+
+
+</script>
+</html>
+

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<style>
+button {font-size: 2em; /* 30px/16=1.875em */}
+</style>
+</head>
+<script>
+function ricp(che){
+f=params.substr(che.length+params.indexOf(che))+"&"
+r=f.substr(0,f.indexOf("&"))
+if(params.indexOf(che)==-1){r=""}
+return r
+}
+const params = window.location.hash.substr(1); 
+const arc = ricp("arc=");
+const quale = ricp("questo=");
+const babbo = ricp("babbo=");
+const qbab = ricp("qbab=");
+const campo = ricp("campo=");
+const inclusore = ricp("inclusore=");
+const qualeincl = ricp("qualeincl=");
+
+
+if (top.sys===undefined){ed=opener.sys;papi=opener}else{ed=top.sys;papi=top}
+tipo=ed.edbsys[arc][campo][3];AA=0
+if (tipo.match(/[0-9]/g)){AA=tipo.match(/[0-9]/g).toString().replace(/,/g, "")*1}
+</script>
+<body style="background-color:#0f0f0f;color:#ffffff;scroll:auto;">
+<canvas id="canvas"style="background-color:#000000;position:absolute;top:0px;left:0px;"></canvas><br>
+<div id="comand"style="background-color:#000000;position:absolute;top:0px;left:0px;">
+<button style="background-color: rgb(255, 136, 102); color: white;" onclick="salva()">X</button>
+</div>
+</body>
+<script>
+matr=[]
+if (parent.questocampo){matr=parent.questocampo}
+var canvas  = document.getElementById("canvas")
+var comand  = document.getElementById("comand")
+var frq  = document.getElementById("frq")
+if (AA==0){AA=480}
+canvas.width=256
+canvas.height=AA
+bottoni="";azione=""
+if (tipo.substr(1,1).toUpperCase()=="S"){azione="S";bottoni="<button onclick='play_tone(256,300,400,300,12)'>test</button><button onclick='zero()'>z</button><button onclick='seno()'>s</button><input id='frq' type='number' value=220 style='width:60px;'><br><audio id='can' controls='' autoplay='' style='background-color:#000000;'></audio>"}
+if (tipo.substr(1,1).toUpperCase()=="I"){azione="I";}
+comand.innerHTML+=bottoni
+comand.style.top=canvas.height+8+"px"
+var ctx = canvas.getContext("2d");
+if (matr.length==0 && azione=="S"){seno()}
+if (matr.length==0 && azione=="I"){salita()}
+function seno(){
+for (i = 0; i < canvas.height; i++) {
+gr=((Math.PI*2)/canvas.height)*i
+matr[i]=Math.sin(gr)}dis()}
+function salita(){
+for (i = 0; i < canvas.height; i++) {
+gr=Math.round((255*i)/canvas.height)
+matr[i]=gr}dis()}
+
+function dis(){
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+ctx.fillStyle = "#8F8F8F";
+ctx.font = "1.4em serif"
+ctx.fillText(". PI 1/2", canvas.width/2,canvas.height/4)
+ctx.fillText(". PI", canvas.width/2,canvas.height/2)
+ctx.fillText(". PI 3/2", canvas.width/2,canvas.height*.75)
+ctx.fillStyle = "red";
+var i;if (!matr[0]){matr[0]=0}
+for (i = 0; i < canvas.height; i++) {
+if(azione=="S"){x=(canvas.width/2)+(matr[i]*(canvas.width/2)-1)}
+if(azione=="I"){x=matr[i];xc=matr[i].toString(16);if (xc.length==1){xc="0"+matr[i].toString(16)}
+ctx.strokeStyle = "#"+xc+xc+xc;
+ctx.beginPath();
+ctx.moveTo(0, i);
+ctx.lineTo(canvas.width, i);
+ctx.stroke();
+ctx.fillStyle = "red";
+}
+ctx.fillRect(x, i, 2,2);
+}ctx.fillStyle = "#fF4F4F";}
+dis()
+k={};zz=""
+
+function salva(){
+ele=campo;ppp=quale
+
+
+meme=btoa(escape(matr))
+
+if (babbo==0){
+if (qualeincl==null){ed.d[arc][ppp][ele]=meme}
+else {ed.d[inclusore][qualeincl][0][arc][ppp][ele]=meme}
+}
+if (babbo>=1){
+if (qualeincl==null){ed.d[babbo][qbab][0][arc][ppp][ele]=meme}
+else {ed.d[babbo][qbab][0][inclusore][qualeincl][0][arc][ppp][ele]=meme}
+}
+
+}
+topo=0;tcx1=0;tcy0=0;tcy1=0;tcx0=0;
+movi = []
+//sensore touchpad------------------------------------------------------
+doppio=0
+canvas.addEventListener("touchstart",function(event){event.preventDefault();movi=[];tcx0=Math.round(event.touches[0].clientX);tcy0=Math.round(event.touches[0].clientY);ct=0;start = Date.now();
+},{passive: false});
+
+canvas.addEventListener("touchmove",function(event) {event.preventDefault();
+tcx1=Math.round(event.touches[0].clientX);tcy1=Math.round(event.touches[0].clientY);
+ctx.fillRect(tcx1, tcy1, 1,1);
+if (tcy1<AA){movi[tcy1]=tcx1}
+},{passive: false});
+canvas.addEventListener("touchend", function(event){event.preventDefault();doppio=0
+ritra()
+topo=0;tcx1=0;tcy0=0;tcy1=0;tcx0=0;doppio=0},{passive: false});
+//sensore mouse------------------------------------------------------
+canvas.addEventListener("mouseleave",function(event){event.preventDefault();},{passive: false});
+canvas.addEventListener("mousedown",function(event){event.preventDefault();movi = []
+if (topo==0){tcx0=event.clientX;tcy0=event.clientY;ct=0;start = Date.now();}
+topo=1},{passive: false});
+
+canvas.addEventListener("mousemove",function(event) {event.preventDefault();
+if (topo==1){
+tcx1=event.clientX;tcy1=event.clientY;
+ctx.fillRect(tcx1, tcy1, 1,1);
+movi[tcy1]=tcx1
+}
+},{passive: false});
+canvas.addEventListener("mouseup", function(event){
+event.preventDefault();
+tcx1=event.clientX;tcy1=event.clientY;
+ritra()
+topo=0;tcx1=0;tcy0=0;tcy1=0;tcx0=0;
+},{passive: false});
+//--------------------------------------------------------
+function ritra(){
+
+da=movi.findIndex(controlla)
+a=movi.length
+for (z=da;z<a;z++)
+{
+if (!movi[z]){movi[z]=movi[z-1]}
+if (z<canvas.height){
+matr[z]=(movi[z]-(canvas.width/2))/(canvas.width/2)
+if(azione=="S"){matr[z]=(movi[z]-(canvas.width/2))/(canvas.width/2)}
+if(azione=="I"){matr[z]=movi[z]}
+}}
+dis()
+movi=[]
+}
+function controlla(esist){return esist != undefined}
+
+//____________________________________crea suono________________________
+frq=document.getElementById("frq")
+function play_tone(freq,attacca,persiste,sfuma,intenso) {
+if (frq.value>0){freq=frq.value}
+var tempo=0;
+var inten=0;
+var fase;
+var sinusoide,t,sinint,quadra,quadrint,sega,segint,totint;
+var periodo=48000/freq;
+var tmul=48;
+
+tempo=(attacca + persiste + sfuma)*tmul;
+peppe="RIFF"+nu((tempo*2)+36,4)+"WAVEfmt "+nu(16,4)+nu(1,2)+nu(1,2)+nu(48000,4)+nu(96000,4)+nu(2,2)+nu(16,2)+"data"+nu((tempo*2),4)
+
+periodo=48000/freq;
+  for (var i=0; i<tempo; i++) { 
+t = i/48000;   
+if (i<attacca*tmul) {inten=(intenso*(i/attacca*tmul));}
+if (i>((attacca + persiste)*tmul)) {inten=intenso*((tempo-i)/sfuma*tmul);}
+
+fase=i % periodo;
+pippo=matr[Math.round((canvas.height*fase)/periodo)]
+sinusoide = (inten*pippo);
+
+quest= Math.round(sinusoide)
+if (quest<0) {quest+=65536}
+peppe += String.fromCharCode(quest & 255)+String.fromCharCode(Math.floor(quest / 256))
+  }
+
+can.src="data:audio/wav;base64,"+window.btoa(peppe)
+
+}
+//_________________________________nu___________________________________
+function nu(quanto,lungo){
+k="";nume=quanto
+for (var i=0;i<lungo;i+=1){
+k+=String.fromCharCode(nume & 255)
+nums=nume
+nume=Math.floor(nums/256)
+}
+return k
+}
+function zero(){
+for (c=0;c<canvas.height;c++){matr[c]=0}
+dis()
+}
+function salva(){
+ele=campo;ppp=quale
+
+meme=matr
+if (babbo==0){
+if (qualeincl==""){ed.d[arc][ppp][ele]=meme}
+else {ed.d[inclusore][qualeincl][0][arc][ppp][ele]=meme}
+}
+if (babbo>=1){
+if (qualeincl==""){ed.d[babbo][qbab][0][arc][ppp][ele]=meme}
+else {ed.d[babbo][qbab][0][inclusore][qualeincl][0][arc][ppp][ele]=meme}
+}
+top.slv.style.backgroundColor="Tomato"
+dett=parent.document.getElementById('uncampo');parent.document.getElementById('pip4').innerHTML='';dett.style.display='none'
+}
+</script>
+</html>

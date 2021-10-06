@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<style>
+button {font-size: 2em; /* 30px/16=1.875em */}
+</style>
+</head>
+<script>
+var questocampo=""
+function ricp(che){
+f=params.substr(che.length+params.indexOf(che))+"&"
+r=f.substr(0,f.indexOf("&"))
+if(params.indexOf(che)==-1){r=""}
+return r
+}
+const params = window.location.hash.substr(1); 
+const arc = ricp("arc=");
+const quale = ricp("questo=");
+const babbo = ricp("babbo=");
+const qbab = ricp("qbab=");
+const campo = ricp("campo=");
+const inclusore = ricp("inclusore=");
+const qualeincl = ricp("qualeincl=");
+if (top.sys===undefined){ed=opener.sys;papi=opener}else{ed=top.sys;papi=top}
+</script>
+<span id="contpar" style="display:block;height:360px;">
+<div id="par" style="width:96%;height:100%;overflow:auto;background-color:white;text-align: justify;padding:8px;" contenteditable="true"></div>
+<button style="background-color: rgb(255, 136, 102); color: white;" onclick="salva()">X</button>
+<button onclick="fanacosa('B');">bold</button>
+<button onclick="fanacosa('I');">italic</button>
+<button onclick="fanacosa('A');">⚓</button>
+<button onclick="fanacosa('H1');">H1</button>
+<button onclick="fanacosa('H2');">H2</button>
+<button onclick="fanacosa('H3');">H3</button>
+<button onclick="testo()">SRC</button>
+</span>
+<span id="conttxt" style="display:none;">
+<textarea id="txt" rows="25" cols="40" wrap="hard">
+</textarea>
+<button onclick="html()">HTML</button>
+</span>
+<script>
+document.getElementById("par").innerHTML=unescape(atob(parent.questocampo))
+k={};zz=""
+function html(){
+document.getElementById("par").innerHTML=document.getElementById("txt").value
+document.getElementById("conttxt").style.display="none"
+document.getElementById("contpar").style.display="block"
+}
+function testo(){
+document.getElementById("txt").value=document.getElementById("par").innerHTML.replaceAll('><','>\r\n<')
+document.getElementById("contpar").style.display="none"
+document.getElementById("conttxt").style.display="block"
+}
+function fanacosa(cosa){
+lasciastare=0
+k=window.getSelection().getRangeAt(0)
+zz=document.createElement(cosa)
+zz.textContent=k.toString()
+if (cosa=="A"){zz.href=prompt("url");if (zz.href=="null"){lasciastare=1}}
+if (lasciastare==0){k.deleteContents();
+k.insertNode(zz);}
+}
+function salva(){
+ele=campo;ppp=quale
+
+if(document.getElementById("conttxt").style.display=="block"){
+meme=btoa(escape(document.getElementById("txt").value))
+}else{meme=btoa(escape(document.getElementById("par").innerHTML))}
+if (babbo==0){
+if (qualeincl==""){ed.d[arc][ppp][ele]=meme}
+else {ed.d[inclusore][qualeincl][0][arc][ppp][ele]=meme}
+}
+if (babbo>=1){
+if (qualeincl==""){ed.d[babbo][qbab][0][arc][ppp][ele]=meme}
+else {ed.d[babbo][qbab][0][inclusore][qualeincl][0][arc][ppp][ele]=meme}
+}
+if (unescape(atob(parent.questocampo))!=document.getElementById("par").innerHTML){top.slv.style.backgroundColor="Tomato"}
+dett=parent.document.getElementById('uncampo');parent.document.getElementById('pip4').innerHTML='';dett.style.display='none'
+
+}
+</script>
+</html>

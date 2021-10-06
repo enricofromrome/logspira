@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <style>
+    body {margin:0;font-size: 1em; /* 30px/16=1.875em */
+    user-select: none; /* Standard syntax */
+}
+span {
+        background-color:#4A4A3A;
+} 
+ input { background-color:white; color:blue;  font:14px courier new; border:1px outset gold; }
+      input:focus {background-color:yellow; color:red; }   
+</style>
+</head>
+<body style="background-color:#000000;">
+<table border="0" style="position: fixed;top:6px;color:white;background-color: black;width:100%; max-width: 400px;right:1;border-style: none;"><tbody><tr>
+ <td id="b2" style="color:white;background-color: black;font-size: 32px; text-align: center" width="20%" onclick="el('Fdial').style.visibility='visible'">▨</td>
+ <td id="b3" style="color:white;background-color: black;font-size: 32px; text-align: center" width="20%" onclick="el('Gdial').style.visibility='visible'">🎨</td>
+ <td id="b4" style="color:white;background-color: black;font-size: 32px; text-align: center" width="20%" onclick="dl()">⇩</td>
+  <td id="b5" style="color:white;background-color: black;font-size: 32px; text-align: center" width="20%" onclick="casa()">&#8962</td>
+    </tr></tbody></table><br>
+
+<br>
+<div id="ccc" style="position: fixed;top:200;">
+<div id="contcanv" style="zoom:100%;">
+<canvas id="canvas"  width="1280" height="720" style="background-color:#000000;"
+ onmousemove="controllo(event)"></canvas>
+ </div></div>
+ <iframe name="salvatore" id="salvatore" style="position: fixed;top:60px;width:320px;height:320px;visibility: hidden;"></iframe>
+ <form id="myForm" action="upload_file.php" method="post" target="salvatore">
+<input id="nome" name="nome" value="vuoto" style="display:none;"/>
+<input id="segreto" name="segreto" value="vuoto" style="display:none;"/>
+<input id="tipo" name="tipo" value="webp" style="display:none;"/>
+<textarea id="carta" name="carta" style="display:none;"></textarea></form>
+<canvas id="canvdata" style="display:none;" width=10 height=10>
+</canvas>
+<a id="downloadAnchorElem" style="display:none"></a>
+
+<div id="Gdial" style="position: fixed;top: 6px;left: 4px;color:white;background-color: gray;font-size: 32px; text-align: center;width:405px; visibility: hidden;" width=400 >
+<span>Grain</span> <input type="range" id="ratrng" value="0" min="0" max="255" onchange="el('Gdial').style.visibility='hidden';zooma()"><br>
+<span>Sat</span> <input type="range" id="disrng" value="0" min="0" max="255" onchange="el('Gdial').style.visibility='hidden';dis()"><br>
+
+
+<span>Hue</span>
+<input type="range" id="diston" value="0" min="0" max="255" onchange="dis()">
+<button onclick="el('Gdial').style.visibility='hidden';calibra()" style="font-size: 20px;background-color: #888888;color: #FFFFFF;">C</button>
+</div>
+       <div id="Fdial" style="position: fixed;top: 6px;left: 4px;color:white;background-color: gray;font-size: 32px; text-align: center;width:405px; visibility: hidden;" width=400 >
+<button onclick="sinus()" style="background-color: rgb(255, 166, 102); color: white;font-size: 32px;">Sin</button><br>
+<span>minPI</span> <input id="minPI" value="0.5" size=4 type="number" style="width:200px;color:white;background-color: black;font-size: 32px;"/><br>
+<span>maxPI</span> <input id="maxPI" value="0.5" size=4 type="number" style="width:200px;color:white;background-color: black;font-size: 32px;"/><hr>
+<button onclick="norma()" style="background-color: rgb(255, 166, 102); color: white;font-size: 32px;">Nor</button><br>
+<span>minN</span> <input id="minN" value="0" size=4 type="number" style="width:200px;color:white;background-color: black;font-size: 32px;"/><br>
+<span>maxN</span> <input id="maxN" value="255" size=4 type="number" style="width:200px;color:white;background-color: black;font-size: 32px;"/><br>
+       </div>
+<script>
+function el(id){return document.getElementById(id);} 
+var prms=""
+function ricp(che){
+f=prms.substr(che.length+prms.indexOf(che))+"&"
+r=f.substr(0,f.indexOf("&"))
+if(prms.indexOf(che)==-1){r=""}
+return r
+}
+if (location.hash.indexOf("campo=")>0){
+prms = location.hash.substr(1) 
+arc = ricp("arc=");
+quale = ricp("questo=");
+babbo = ricp("babbo=");
+qbab = ricp("qbab=");
+campo = ricp("campo=");
+tipo = top.sys.edbsys[arc][campo][3].toUpperCase()}
+else {tipo="IS";prms="";arc="0"
+document.getElementById("myForm").action+=parent.opener.location.search
+}
+var img = document.createElement('img'); 
+img.onload = function(){context.drawImage(img,-x/2,-y/2);};
+var canvas  = document.getElementById("canvas")
+canvas.width=localStorage.largimm
+canvas.height=localStorage.lungimm
+var context = canvas.getContext("2d");
+context.translate(canvas.width/2,canvas.height/2);
+context.rotate((Math.PI/180)*parent.ruot);
+var canvdata  = document.getElementById("canvdata")
+var datactx = canvdata.getContext("2d");
+
+var x=parent.context.canvas.width
+var y=parent.context.canvas.height
+zoomx=(window.innerWidth-20)/localStorage.largimm
+zoomy=(window.innerHeight-120)/localStorage.lungimm
+zoom=zoomx;if(zoomy<zoomx){zoom=zoomy}
+if(zoom<1){el("contcanv").style.zoom=zoom*100+"%"}
+canvdata.width=x
+canvdata.height=y
+el("ccc").style.top=((window.innerHeight-(localStorage.lungimm*zoom))/2)+"px"
+grana=0
+var c=[];tupu=0;valor=0;quest=0
+var minc=300;maxc=0;maxpop=0
+var gr=[]
+var cc=[]
+for (i = 0; i < 441; i++) {c[i]=0;}
+var iD=parent.context.getImageData(0,0,x,y)
+for (var i=0;i<iD.data.length;i+=4)
+  {
+  r=iD.data[i+0]
+  g=iD.data[i+1]
+  b=iD.data[i+2]
+g=Math.floor((g*.918)+(r*.623)+(b*.19))
+//g=Math.floor((g*.53)+(r*.36)+(b*.11))
+//g=Math.min(r,g,b)
+c[g]+=1
+if (g<minc){minc=g}
+if (g>maxc){maxc=g}
+if (c[g]>maxpop){maxpop=c[g]}
+tupu+=1
+  }
+
+
+unosc=tupu/(maxc-minc)
+totp=0;zzz=0
+for (var i=minc;i<=maxc;i+=1){
+totp+=c[i]
+if (totp>=unosc){gr[zzz]=i;totp-=unosc;zzz+=1}
+}
+gr[gr.length]=maxc
+part=0
+valor=255/maxc
+quest=0
+for (var i=0;i<=maxc;i+=1)
+{
+for (var ii=part;ii<=(gr[i]+1);ii+=1)
+    {
+cc[ii]=Math.round(quest)
+    }
+quest+=valor
+part=gr[i]
+}
+//----------------------------------------------------------------
+function dis(){
+dis1=(255-document.getElementById("disrng").value)/255
+dis2=document.getElementById("disrng").value/255
+dis3=(document.getElementById("diston").value/255)*(2*Math.PI)
+var iD=parent.context.getImageData(0,0,x,y)
+for (var i=0;i<iD.data.length;i+=4)
+  {
+  r=iD.data[i+0]
+  g=iD.data[i+1]
+  b=iD.data[i+2]
+//il totale dei colori Ã¨ 1.731*255 pari alla diagonale del cubo sqr(3)
+gri=cc[Math.floor((g*.918)+(r*.623)+(b*.19))]
+//gri=cc[Math.min(r,g,b)]
+s=(Math.floor((Math.random()*grana)-(grana/2)))
+//if (Math.random()>.49999){kk=1}else{kk=-1}
+//if (r==g && g==b){g+=1}
+tono=0.0
+r2=0.0
+g2=0.0
+b2=0.0
+alfa=255
+
+xcol=((r*0.866)-(b*0.866))/255
+ycol=(g-((r*.5)+(b*.5)))/255
+sat=Math.sqrt(Math.pow(xcol,2)+Math.pow(ycol,2))
+
+ang=Math.atan2(ycol,xcol)+dis3//+Math.PI....quÃ¬ si ruota il colore
+//tonoy=Math.asin(ycol)+dis3//+Math.PI
+
+g2=(Math.sin(ang)*sat)
+r2=(Math.cos(ang)*sat)-(g2/2)
+b2=-(Math.cos(ang)*sat)-(g2/2)
+//r2=g2*-0.5
+gri+=s
+r1=(255*r2*dis2*5)+gri
+b1=(255*b2*dis2*5)+gri
+g1=(255*g2*dis2*5)+gri
+//g1=(Math.round(Math.cos(tono)*sat))
+//if (g1>255){g1=255;r1=255}
+//if (g1<=6){b1=255}
+
+
+  iD.data[i+0]=r1
+  iD.data[i+1]=g1
+  iD.data[i+2]=b1
+  iD.data[i+3]=alfa
+  }
+
+ spiax=(parent.context.canvas.width-x)/-2
+//datactx.putImageData(iD,0,0)
+datactx.putImageData(iD, 0, 0)
+img.src=canvdata.toDataURL();
+
+ 
+}
+
+function zooma(){
+grana=document.getElementById("ratrng").value
+dis()
+}
+function calibra(){
+
+context.fillStyle='#FF0FFF';
+for (i = 0; i < 442; i++) {
+context.fillRect(i*2,300,1,-200*(c[i]/maxpop))
+context.fillRect(i*2,302,1,cc[i])
+}
+
+}
+
+function controllo(event) {
+var x=event.x-canvas.offsetLeft
+var y=event.y-canvas.offsetTop
+    if (event.ctrlKey) {
+        //alert("The CTRL key was pressed!" + x +" "+ y );
+    context.fillStyle='#FFFF0F';
+context.fillRect(x,y,2,2)
+ig=y-310
+if (ig<0){ig=0}
+if (ig>255){ig=255}
+cc[Math.floor(x/2)]=ig
+if (x>884){dis()}
+    } 
+
+}
+
+function sinus(){
+minpi=-(document.getElementById('minPI').value*Math.PI)
+maxpi=document.getElementById('maxPI').value*Math.PI
+
+step=(Math.abs(minpi)+maxpi)/(maxc-minc)
+ii=0
+for (var i=minc;i<=maxc;i+=1){
+ig=127+Math.floor((Math.sin((minpi)+(ii*step)))*127)
+ii+=1
+cc[i]=ig
+}
+el("Fdial").style.visibility="hidden"
+dis()
+}
+function norma(){
+min=255
+max=0
+for (var i=minc;i<=maxc;i+=1){
+if (min>cc[i]){min=cc[i]}
+if (max<cc[i]){max=cc[i]}
+}
+norm=(document.getElementById('maxN').value-document.getElementById('minN').value)/(max-min)
+for (var i=minc;i<=maxc;i+=1){
+cc[i]=Math.floor((cc[i]-min)*norm)+(document.getElementById('minN').value*1)
+}
+el("Fdial").style.visibility="hidden"
+dis()
+}
+
+function casa(){
+var dataStr = canvas.toDataURL("image/webp",0.9) 
+if (tipo.substr(0,2)=="II"){
+if (babbo>0){parent.top.sys.d[babbo][qbab][0][arc][quale][campo] = dataStr}
+if (babbo<1){parent.top.sys.d[arc][quale][campo] = dataStr}
+parent.chiudical()
+}
+if (tipo.substr(0,2)=="IS"){
+d = new Date()
+ddd="Img"+d.getFullYear()+"_"+(d.getMonth()+1)+"_"+d.getDate()+"_"+d.getHours()+"_"+d.getMinutes()
+jj=prompt("img name",ddd)
+document.getElementById("nome").value = jj
+document.getElementById("carta").value = dataStr
+document.getElementById("salvatore").style.visibility = "visible"
+if (jj){document.getElementById("myForm").submit();}
+}
+
+}
+
+function dl() {
+if(localStorage.tipoimm.includes("jpg")){
+var dataStr = canvas.toDataURL("image/jpeg",0.5) 
+var dlAnchorElem = document.getElementById('downloadAnchorElem');
+dlAnchorElem.setAttribute("href",     dataStr     );
+dlAnchorElem.setAttribute("download", "pippo.jpg");
+dlAnchorElem.click();}
+if(localStorage.tipoimm.includes("webp")){
+var dataStr = canvas.toDataURL("image/webp") 
+var dlAnchorElem = document.getElementById('downloadAnchorElem');
+dlAnchorElem.setAttribute("href",     dataStr     );
+dlAnchorElem.setAttribute("download", "pippo.webp");
+dlAnchorElem.click();}
+if(localStorage.tipoimm.includes("png")){
+var dataStr = canvas.toDataURL("image/png") 
+var dlAnchorElem = document.getElementById('downloadAnchorElem');
+dlAnchorElem.setAttribute("href",     dataStr     );
+dlAnchorElem.setAttribute("download", "pippo.png");
+dlAnchorElem.click();}
+
+parent.chiudical()
+}
+
+dis()
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>edb 2021</title>
+<meta name="theme-color" content="#7E7EFB"/>
+<meta name=viewport content="width=device-width, initial-scale=1">
+<link rel="manifest" href="manifest.json"> 
+<meta name="mobile-web-app-capable" charset="UTF-8" content="yes"/>
+<link rel="icon" sizes="36x36" href="launcher-icon-0-75x.png">
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<style>
+body {background-color:white; color:blue;margin:0;font-size: 1em;
+}
+button {font-size: 2em; /* 30px/16=1.875em */}
+
+
+</style>
+<script>
+
+
+edb=top.sys.edbsys
+cor=""
+
+function fallo(){
+for (var r = 1, n = edb.length; r < n; r++) {
+cor+="<h3>"+r+" "+edb[0][r][2]+" <span style='color:red;'>"+edb[0][r][9]+"</span></h3><table border=1><tr>"
+for (var rr = 1, nn = edb[r].length; rr < nn; rr++) {
+cor+="<td>"+edb[r][rr][1]+"</td>"
+cor+="<td>"+edb[r][rr][2]+"</td>"
+cor+="<td>"+edb[r][rr][3]+"</td>"
+cor+="<td>"+edb[r][rr][4]+"</td>"
+cor+="<td>"+edb[r][rr][5]+"</td>"
+cor+="<td>"+edb[r][rr][6]+"</td>"
+cor+="</tr>"
+}
+cor+="</table>"}
+}
+fallo()
+
+
+
+
+//--------------------------------------------------------
+
+function nascondi(k){
+f="decodhtm"
+top.chiudi(f)}
+
+//_________________________________________________________
+
+</script>
+</head>
+<body style="">
+   <button style="color:white;background-color: #f86;font-size: 32px; text-align: center"    onclick="nascondi()" width="20%">X</button>
+<h2 id="info"></h2> 
+<p id="corpo"></p> 
+
+
+<br>
+<script>
+corpo.innerHTML+=cor
+info.innerHTML=top.sys.name
+</script>
+
+</body>
+
+</html>
+

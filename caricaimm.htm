@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+img {
+        filter:contrast(200%);
+}     
+</style>
+</head>
+<body>
+ <input type='file' id="fileUpload" /> 
+
+<input type="radio" name="shape" value="pano" checked  onchange="formato(1)">
+<span style="font-size: 32px">&#9645;</span>  
+<input type="radio" name="shape" value="quad" onchange="formato(2)">  
+<span style="font-size: 32px">&#9633;</span> 
+<input type="radio" name="shape" value="port" onchange="formato(3)">  
+<span style="font-size: 32px">&#9647;</span>
+<input type="radio" name="shape" value="port" onchange="formato(4)">
+<span style="font-size: 32px">1:1</span>
+<button style="font-size: 16px" onclick="document.getElementById('ratrng').value-=1;zooma();"> &#x1f50d;</button>
+<input type="range" id="ratrng" value="5" min="0" max="10" onchange="zooma()">
+<button style="font-size: 32px" onclick="document.getElementById('ratrng').value-=(-1);zooma();"> &#x1f50d;</button>
+
+<button style="font-size: 32px" onclick="document.getElementById('girrng').value-=0.1;gira();"> &#x21BA;</button>
+<input type="range" id="girrng" value="0" min="-180" max="180" step="0.1" onchange="gira()">
+<button style="font-size: 32px" onclick="document.getElementById('girrng').value-=(-0.1);gira();">&#x21BB;</button>
+
+<button style="font-size: 32px" onclick="salva()">&#128190;</button>
+<button style="font-size: 32px" onclick="window.open('calibra.htm');">&#128295;</button>
+<button style="font-size: 32px" onclick="window.open('ingrand.htm');">&#128065;</button>
+<button style="font-size: 32px" onclick="window.open('imgs/vedi.php');">&#128250;</button>
+<br>
+<canvas id="canvas"  width="1280" height="720" style="background-color:#000000;" onclick="sposta()"></canvas> 
+<form id="myForm" action="scrimg.php" method="post" target="salvatore">
+<textarea id="carta" name="carta" style="display:none;"></textarea></form> 
+<script type="text/javascript">
+function el(id){return document.getElementById(id);} // Get elem by ID
+
+var canvas  = el("canvas");
+var context = canvas.getContext("2d");
+var img = new Image();
+larg=0;lung=0;oriz=0;vert=0;grad=0
+ratio=1
+spx=0
+spy=0
+function readImage() {
+    if ( this.files && this.files[0] ) {
+        var FR= new FileReader();
+        FR.onload = function(e) {
+           
+           img.onload = function() {
+             formato(0)
+           };
+    img.src = e.target.result;
+        };       
+        FR.readAsDataURL( this.files[0] );
+    }
+}
+
+el("fileUpload").addEventListener("change", readImage, false);
+
+function formato(x){
+larg=img.width
+lung=img.height
+if (x===0){oriz=document.getElementById("canvas").width;vert=document.getElementById("canvas").height}
+if (x===1){oriz=1280;vert=720}
+if (x===2){oriz=720;vert=720}
+if (x===3){oriz=422;vert=720}
+if (x===4){oriz=larg;vert=lung}
+document.getElementById("canvas").width=oriz
+document.getElementById("canvas").height=vert
+ratiox=oriz/larg;ratioy=vert/lung
+ratio=ratiox
+spx=0;spy=0;grad=0;oldgrad=0
+if (ratioy>=ratiox){ratio=ratioy}
+ratmin=ratio*1000
+var x = document.getElementById("ratrng").step = "1"
+var x = document.getElementById("ratrng").min = ratmin
+var x = document.getElementById("ratrng").max = "1000"
+var x = document.getElementById("ratrng").value = ratmin
+var x = document.getElementById("girrng").value = 0
+dis()
+}
+function zooma(){
+ratio=document.getElementById("ratrng").value/1000
+dis()
+}
+function sposta(){
+x=spx+((event.x - canvas.offsetLeft)-(oriz/2))/ratio*-1
+y=spy+((event.y - canvas.offsetTop)-(vert/2))/ratio
+spx=x;spy=y
+//alert(x + " " + y)
+dis()
+}
+
+function dis(){
+
+
+context.drawImage(img, (oriz/2)-(((larg/2)-spx)*ratio), (vert/2)-(((lung/2)+spy)*ratio),larg*ratio,lung*ratio);
+}
+
+function gira(){
+dis()
+oldgrad=grad
+grad=document.getElementById("girrng").value
+context.translate(oriz/2, vert/2)
+context.rotate((Math.PI/180)*-oldgrad)
+context.rotate((Math.PI/180)*grad)
+context.translate(-oriz/2, -vert/2)
+dis()
+}
+function salva(){
+
+document.getElementById("carta").value = canvas.toDataURL("image/jpeg",0.5)
+document.getElementById("myForm").submit();
+
+}
+
+    </script>
+</body>
+</html>
+

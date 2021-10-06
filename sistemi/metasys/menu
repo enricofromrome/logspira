@@ -1,0 +1,6 @@
+"menu 0","descr 1","img(opt) 2","X 3","Y 4","dX 5","dY 6","FG 7","BG 8","actn 9"
+0,,,0,0,"100%","100%",,"blue",
+0,"database",,10,10,120,30,"white","red","legdb.htm"
+0,"menu mgr",,10,50,120,30,"white","olive","menmgr.htm"
+0,"db mgr",,10,150,120,30,"white","indigo","dbmgr.htm"
+0,"this menu mgr",,10,90,120,30,"white","blue","menmgr.htm?me=true"

@@ -1,0 +1,277 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>edb 2019</title>
+<meta name="theme-color" content="#7E7EFB"/>
+<meta name=viewport content="width=device-width, initial-scale=1">
+<link rel="manifest" href="manifest.json"> 
+<meta name="mobile-web-app-capable" charset="UTF-8" content="yes"/>
+<link rel="icon" sizes="36x36" href="launcher-icon-0-75x.png">
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<style>
+body {margin:0;font-size: 1em;
+-webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+button {font-size: 2em; /* 30px/16=1.875em */}
+.sopra {display: none;
+position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+overflow-y: auto;
+background-color:red;
+}
+      input { background-color:white; color:blue;  font:14px courier new; border:3px outset gold; }
+      input:focus {background-color:yellow; color:red; }
+      select { background-color:white; color:blue;  font:14px courier new; border:3px outset gold; }
+      select:focus {background-color:yellow; color:red; }
+      
+form.html5-form {
+  max-width: 350px;
+}
+
+.indice { background-color:#ffffff; color:blue;  font:24 px monospace;
+width: 95%;max-width: 340px;
+    height: 180px;padding-top: 0px; padding-bottom: 0px;white-space: nowrap;
+    overflow-y: scroll;
+    overflow-x:hidden;cursor:pointer
+}
+
+</style>
+
+</head>
+<body style="">
+<table border="0" style="position: sticky;color:white;background-color: #C43;width:100%; max-width: 400px;top: 0px;right:1;border-style: none;"><tbody><tr>
+  <td id="b1" style="color:white;background-color: blue;font-size: 32px; text-align: center" width="20%" onclick="bott(1)">⟱</td>
+  <td id="b2" style="color:white;background-color: black;font-size: 32px; text-align: center" width="20%" onclick="bott(2)">⤨</td>
+  <td id="b3" style="color:black;background-color: white;font-size: 32px; text-align: center" width="20%" onclick="salva()">⟰</td>
+  <td style="color:white;background-color: #f86;font-size: 32px; text-align: center"    onclick="nascondi()" width="20%">X</td>
+  
+  </tr></tbody></table>
+<canvas id="canvas" width=350px height=510px  onclick="clickcanv(event.clientX,event.clientY)"></canvas>
+<script>
+vecchio={}
+topo=0
+tcx0=0;tcy0=0
+inclusore=[]
+edb=[];edb[0]=[]
+sy=top.sys.c[1]
+w = new Worker("./handleDb.js");
+init=1;nsys={}
+w.onmessage = function(event) {
+if(init==3){
+vecchio=JSON.parse(event.data)
+init=4
+}
+if (init==2){
+sys=JSON.parse(event.data)
+trova=top.sys.d[1][sy][1]
+for (k=0;k<sys.length;k++){
+if(sys[k][0]==trova){
+w.postMessage(["leggiuno",trova]);
+}}
+init=3;
+}
+if (init==1){init=2;fallo()}
+}
+w.postMessage(["init"]);
+
+function dadaedb(){
+ndb=top.sys.d[1][sy][0][2]
+edb[0][0]=[0, 0, "archiv", "pos x", "pos y", "dim X", "dim Y", "col FG", "col BG", "call", "CSV", "DIR"]
+for (var r = 1, n = ndb.length; r < n; r++) {
+edb[0][r]=[];edb[0][r][0]=0;edb[0][r][1]=r
+for (var rr = 1, nn = ndb[r].length; rr < nn; rr++) {
+edb[0][r][rr+1]=ndb[r][rr]
+}}m=edb[0]}
+
+
+
+
+function fallo(){w.postMessage(["readAll"]);}
+//_________________________________________________________
+
+dadaedb()
+clitotop=0;clitoleft=0
+  var canvas = document.getElementById('canvas')
+        ctx = canvas.getContext('2d')
+        mydad=[]
+for (var r = 1, n = edb[0].length; r < n; r++) {inclusore[r]=0;mydad[r]=0;}
+//sensore touchpad------------------------------------------------------
+canvas.addEventListener("touchstart",function(event){event.preventDefault();tcx0=event.touches[0].clientX;tcy0=event.touches[0].clientY;ct=0;start = Date.now();clickcanv(tcx0,tcy0);clitotop=(tcy0-canvas.offsetTop)-edb[0][chi][4];clitoleft=(tcx0)-edb[0][chi][3];},{passive: false});
+
+canvas.addEventListener("touchmove",function(event) {event.preventDefault();
+tcx1=event.touches[0].clientX;tcy1=event.touches[0].clientY;
+if (document.getElementById("b2").style.backgroundColor=="blue"){
+edb[0][chi][3]=tcx1-clitoleft
+edb[0][chi][4]=tcy1-canvas.offsetTop-clitotop
+top.sys.d[1][sy][0][2][chi][2]=tcx1-clitoleft
+top.sys.d[1][sy][0][2][chi][3]=tcy1-canvas.offsetTop-clitotop
+}
+},{passive: false});
+canvas.addEventListener("touchend", function(event){event.preventDefault();
+m[chi][3]=tcx1+tcx0;m[chi][4]=tcy1+tcy0;
+if (specchio=="true"){top.sys.menu[chi][3]=tcx1+tcx0;top.sys.menu[chi][4]=tcy1+tcy0;}else{top.sys.d[babbo][qbab][0][4][chi][4]=tcx1+tcx0;top.sys.d[babbo][qbab][0][4][chi][5]=tcy1+tcy0;}
+
+camb();disegna(menu)
+},{passive: false});
+//sensore mouse------------------------------------------------------
+canvas.addEventListener("mousedown",function(event){event.preventDefault();
+if (topo==0){tcx0=event.clientX;tcy0=event.clientY;ct=0;start = Date.now();clickcanv(tcx0,tcy0);clitotop=(tcy0-canvas.offsetTop)-edb[0][chi][4];clitoleft=(tcx0)-edb[0][chi][3];}
+topo=1},{passive: false});
+
+canvas.addEventListener("mousemove",function(event) {event.preventDefault();
+tcx1=event.clientX;tcy1=event.clientY;
+if (document.getElementById("b2").style.backgroundColor=="blue" && topo==1){
+edb[0][chi][3]=tcx1-clitoleft
+edb[0][chi][4]=tcy1-canvas.offsetTop-clitotop
+top.sys.d[1][sy][0][2][chi][2]=tcx1-clitoleft
+top.sys.d[1][sy][0][2][chi][3]=tcy1-canvas.offsetTop-clitotop
+}
+},{passive: false});
+canvas.addEventListener("mouseup", function(event){event.preventDefault();tcx1=event.clientX+tcx0;tcy1=event.clientY+tcy0;
+topo=0;
+camb();
+},{passive: false});
+//--------------------------------------------------------
+function bott(x){
+document.getElementById("b1").style.backgroundColor="black" 
+document.getElementById("b2").style.backgroundColor="black"
+if (x==1){document.getElementById("b1").style.backgroundColor="blue"} 
+if (x==2){document.getElementById("b2").style.backgroundColor="blue"} 
+}
+//___________________________disegna_________________
+function disegna(){
+dadaedb()
+for (var r = 0, n = edb[0].length; r < n; r++) {   
+
+ctx.clearRect(0, 0, canvas.width, canvas.height)
+ctx.fillStyle = "#000"
+ctx.globalAlpha=0.8;
+ctx.shadowBlur=8;
+ctx.shadowOffsetX=3;
+ctx.shadowOffsetY=3;
+ctx.shadowColor="black";
+ctx.lineCap="round"
+for (var r = 1, n = edb[0].length; r < n; r++) {
+questo= edb[0][r]
+
+if(Array.isArray(questo) && isNaN(questo[9])){
+//zona richiami m (multipli), s (singoli) e i (inclusi)
+var roba = questo[9].toLowerCase()
+var patt = new RegExp("m|s|i")
+while (roba.length){
+chiama=parseInt(roba)
+come=patt.exec(roba)
+esse=roba.search(come)
+taglia=esse+1
+chiamato=edb[0][chiama]
+ax=(chiamato[3]*1)+10
+dax=(questo[3]*1)+10
+ay=(chiamato[4]*1)+10
+day=(questo[4]*1)+10
+ctx.globalAlpha=1
+lw=2
+if (come=="m" || come=="i"){lw=18}
+ctx.lineWidth=lw;
+ctx.strokeStyle=chiamato[7]
+ctx.beginPath();
+ctx.moveTo( dax, day);
+ctx.lineTo( ax, ay);
+ctx.stroke()
+if (come=="i"){inclusore[chiama]=r;ctx.lineWidth=3;ctx.strokeStyle=questo[7];ctx.strokeRect(chiamato[3], chiamato[4], chiamato[5],chiamato[6])}
+if (taglia>0) {roba=roba.substr(taglia)} else {roba=""}
+}
+}
+}}
+for (var r = 1, n = edb[0].length; r < n; r++) {
+questo= edb[0][r]
+if(Array.isArray(questo)){
+ctx.globalAlpha=.4
+ctx.fillStyle = questo[8]
+ctx.fillRect(questo[3], questo[4], questo[5],questo[6])
+ctx.globalAlpha=1
+ctx.font = "1.4em serif"
+ctx.fillStyle = questo[7]
+homen=questo[2]
+
+ctx.fillText(homen, questo[3],(questo[4] * 1)+22,questo[5])
+}}
+}
+
+//disegna() end
+function aggiorna(){disegna();setTimeout(aggiorna,40)}
+aggiorna()
+
+function nascondi(k){
+f="dbmgrhtm"
+top.chiudi(f)}
+
+//_________________________________________________________
+
+function clickcanv(x,y1)
+{chi=0
+co=edb[0]
+y=y1-canvas.offsetTop
+
+
+        for (r = 1, n = co.length; r < n; r++) {
+if (Array.isArray(co[r])){
+questo= co[r]
+dax=questo[3]*1;finx=questo[3]*1+questo[5]*1
+
+day=questo[4]*1;finy=questo[4]*1+questo[6]*1
+if (x>=dax && x<=finx && y>=day && y<=finy){chi=r;}
+}}
+
+
+if (chi>0 && document.getElementById("b1").style.backgroundColor=="blue"){
+sd="legdb2.htm#arc=2&questo="+chi+"&babbo=1&qbab="+sy+"&funz=entra"
+top.apri(sd)
+
+chi=0;topo=0
+}} 
+
+function camb(){top.slv.style.backgroundColor="Tomato"}
+function salva(){
+dadaedb()
+ndb=top.sys.d[1][sy][0][2]
+for (var r = 1, n = ndb.length; r < n; r++) {
+edb[r]=[]
+edb[r][0]=[r, 0, "descr", "smrped0-9ITHAWV", "isinCSV", "pattern", "etc"]
+ddb=ndb[r][0][3]
+for (var rr = 1, nn = ddb.length; rr < nn; rr++) {
+//edb[0][r][rr+1]=ndb[r][rr]
+edb[r][rr]=[r,rr]
+for (var rrr = 1, nnn = ddb[rr].length; rrr < nnn; rrr++) {
+edb[r][rr][rrr+1]=ddb[rr][rrr]
+}}}
+menu=[]
+menu[0]=["menu 0", "descr 1", "img(opt) 2", "X 3", "Y 4", "dX 5", "dY 6", "FG 7", "BG 8", "actn 9"]
+ddb=top.sys.d[1][sy][0][4]
+for (var rr = 1, nn = ddb.length; rr < nn; rr++) {
+menu[rr]=[]
+for (var rrr = 1, nnn = ddb[rr].length; rrr < nnn; rrr++) {
+menu[rr][rrr-1]=ddb[rr][rrr]
+if (rrr==1){menu[rr][rrr-1]=parseInt(ddb[rr][rrr])}
+}}
+
+
+if (init==3){
+vecchio={"name": trova,"edbsys":edb,"menu":menu}
+ w.postMessage(["add",JSON.stringify(vecchio)]);alert('dovrei aver salvato')}
+if (init==4){
+vecchio.edbsys=edb
+vecchio.menu=menu
+ w.postMessage(["aggiorna",trova,vecchio]);alert('dovrei aver salvato')}
+}
+</script>
+<br>
+</body>
+
+</html>
+

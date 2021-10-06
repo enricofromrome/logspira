@@ -1,0 +1,221 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>edb 2021</title>
+<meta name="theme-color" content="#7E7EFB"/>
+<meta name=viewport content="width=device-width, initial-scale=1">
+<link rel="manifest" href="manifest.json"> 
+<meta name="mobile-web-app-capable" charset="UTF-8" content="yes"/>
+<link rel="icon" sizes="36x36" href="launcher-icon-0-75x.png">
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<style>
+body {background-color:darkgray; color:blue;margin:0;font-size: 1em;
+}
+
+</style>
+<script>
+nn=0
+function ricp(che){
+f=params.substr(che.length+params.indexOf(che))+"&"
+r=f.substr(0,f.indexOf("&"))
+if(params.indexOf(che)==-1){r=""}
+return r
+}
+const params = window.location.hash.substr(1);
+tempo = ricp("tempo=")*1;
+strumento = ricp("strumento=")*1;
+durata=0.25
+forza=0.3
+pitch=440
+pitchto=440
+questo = ricp("questo=")*1;
+bpm=top.sys.d[2][top.sys.c[2]][7]*1
+if (!bpm){bpm=60}
+artempo=top.sys.d[2][top.sys.c[2]][0][4]
+if (questo){codesto=artempo[questo]
+tempo = codesto[1]*1
+durata= codesto[2]*1
+forza= codesto[3]*1
+pitch= codesto[4]*1
+pitchto= codesto[5]*1
+strumento =  codesto[6]*1
+}
+
+w = new Worker("suona.js")
+
+w.onmessage = function(event){
+  ris=event.data
+  sr="data:audio/wav;base64,"+ris
+  can.src=sr
+};
+ kb=4.031360
+smt=12
+if (localStorage.semitoni){smt=localStorage.semitoni;if (smt<1){smt=12}}else{localStorage.semitoni=smt}
+if (localStorage.basetoni){kb=(localStorage.basetoni*1)+4}else{localStorage.basetoni=k-4}
+
+
+
+function aho(){
+dafa={}
+dafa.bpm=bpm
+dafa.tempo=[]
+dafa.tempo[1]=[0,0,durata,forza,pitch,pitchto,1]
+dafa.timbri=top.sys.d[1]
+dafa.battuta=top.sys.d[3]
+dafa.instr=[]
+dafa.instr[1]=top.sys.d[5][strumento][0][6]
+w.postMessage(JSON.stringify(dafa))
+}
+
+rosso=Math.PI*.6666666
+bleu=Math.PI*1.3333333
+ww=21
+
+function dafreacol(ff){
+sat=Math.log2(ff)
+an=(sat % 1)
+ang=an*Math.PI*2
+g2=0;r2=0;b2=0
+if (an>=0 & an<=0.333333333){r2=1}
+if (an>=0.333333333333 & an<=0.66666666666){g2=1}
+if (an>=0.666666666666 & an<=1){b2=1}
+if (an>=0 & an<=0.1666666666666){b2=1-(an*6)}
+if (an>=0.1666666666666 & an<=0.3333333333){g2=((an-0.1666666666666)*6)}
+if (an>=0.3333333333 & an<=0.5){r2=1-((an-0.3333333333)*6)}
+if (an>=0.5 & an<=0.66666666666){b2=((an-0.5)*6)}
+if (an>=0.6666666666 & an<=0.833333333333){g2=1-((an-0.6666666666)*6)}
+if (an>=0.833333333333 & an<=1){r2=((an-0.833333333333)*6)}
+g3=Math.round((g2)*ww*sat)
+r3=Math.round((r2)*ww*sat)
+b3=Math.round((b2)*ww*sat)
+gre="0"+g3.toString(16)
+red="0"+r3.toString(16)
+blu="0"+b3.toString(16)
+
+cosimo="#"+red.slice(-2)+gre.slice(-2)+blu.slice(-2)
+return(cosimo)
+}
+
+
+
+function nascondi(k){
+f=location.hash.substr(1)
+top.chiudi(f)}
+
+
+</script>
+
+<body>
+<button style="color:white;background-color: #f86;font-size: 32px; text-align: center"    onclick="nascondi()" width="20%">X</button>
+<button style="color:white;background-color: #8f6;font-size: 32px; text-align: center"    onclick="aggiungi()" width="20%">+</button>
+
+<br><br> - 
+<canvas id="canvas" width="360px" height="360px" 
+onclick="ciapa((event.x-this.offsetLeft-180),((360-(event.y-this.offsetTop))-180))"></canvas>
+<br>
+<div>
+<div style="color: rgb(0, 0, 255); font-size: 16px; text-align: start;">Time <input id="Time" type="number" value="0" style="width: 120px;"  onchange="tempo=this.value;">
+</div>
+<div style="color: rgb(0, 0, 255); font-size: 16px; text-align: start;">Length <input id="Length" type="number" value="1" style="width: 120px;" onchange="durata=this.value;">
+</div>
+<div style="color: rgb(0, 0, 255); font-size: 16px; text-align: start;">Strength <input id="Strength" type="number" value="1" style="width: 120px;"  onchange="forza=this.value;">
+</div>
+<div style="color: rgb(0, 0, 255); font-size: 16px; text-align: start;">Pitch <input id="Pitch" type="number" value="93" style="width: 120px;"  onchange="pitch=this.value;">
+</div>
+<div style="color: rgb(0, 0, 255); font-size: 16px; text-align: start;">PitchTo <input id="PitchTo" type="number" value="93" style="width: 120px;"  onchange="pitchto=this.value;">
+</div>
+<button  style="font-size: 2em;" onclick="aho()">♫</button>
+</div>
+<p id="risult"></p>
+<audio id='can' controls='' autoplay='' style='position: absolute;top: 620px;width: 90%;background-color:#ffffff;height:28px;visibility:hidden;display: none;'>
+</body>
+
+<script>
+//semit.value=smt
+//base.value=k-4
+
+  var canvas = document.getElementById('canvas')
+        ctx = canvas.getContext('2d')
+        ctx.fillStyle = "black"
+ ctx.fillRect(0, 0, canvas.width, canvas.height)       
+ p=Math.PI
+
+
+
+for (k=kb;k<12;k+=(1/smt)){
+
+fq=Math.pow(2,k)
+//aho(fq)
+//if (fq>420 & fq<460){risult.innerHTML=fq+"<br>"}
+
+colore=dafreacol(Math.pow(2,k))
+sang=((Math.PI*2)/smt)/2.2
+daang=ang-sang
+fiang=ang+sang
+//sttp=(Math.PI/480)*sang
+sttp=0.02
+for (agn=daang;agn<=fiang;agn+=sttp){
+dax=(canvas.width/2)+(Math.sin(agn)*(sat-1)*15)
+day=(canvas.height/2)-(Math.cos(agn)*(sat-1)*15)
+ax=(canvas.width/2)+(Math.sin(agn)*(sat-.1)*15)
+ay=(canvas.height/2)-(Math.cos(agn)*(sat-.1)*15)
+linea(colore,4,dax,day,ax,ay)
+}
+
+}
+
+function cambiato(){
+if (semit.value<1){semit.value=12	}
+localStorage.semitoni=semit.value;
+localStorage.basetoni=base.value;
+ctx.fillStyle = "black"
+ ctx.fillRect(0, 0, canvas.width, canvas.height)
+smt=semit.value;k=4+(base.value*1)
+} 
+
+
+ function linea(colore,lar,dax,day,ax,ay) { 
+ ctx.beginPath();
+ctx.lineWidth = lar;   
+ctx.moveTo(dax, day);   
+//ctx.lineCap="round"; 
+ctx.lineTo(ax,ay); 
+ctx.strokeStyle = colore;
+ctx.stroke();
+}
+
+function ciapa(x,y){
+ang=Math.atan2(x/15,y/15)+(kb % 1)-sang;if (ang<0){ang+=(2*Math.PI)}
+sat=Math.floor(Math.sqrt(Math.pow(x/15,2)+Math.pow(y/15,2))-((ang+sang+(kb % 1))/(2*Math.PI)))+1
+
+zzx=sat+(Math.floor(((ang+sang+(kb % 1))*smt)/(2*Math.PI))/smt)+(kb % 1)
+
+pitch=Math.round(Math.pow(2,zzx)*Math.pow(10,4))/Math.pow(10,4)
+pitchto=pitch
+Pitch.value=pitch
+PitchTo.value=pitch
+//alert(Math.pow(2,zzx))
+aho()
+}
+
+function aggiungi(){
+artempo=[]
+if (!questo){questo=top.sys.d[2][top.sys.c[2]][0][4].length
+top.sys.d[2][top.sys.c[2]][0][4][questo]=[]
+}
+artempo[0]=[]
+artempo[1]=tempo.toString()
+artempo[2]=durata.toString()
+artempo[3]=forza.toString()
+artempo[4]=pitch.toString()
+artempo[5]=pitchto.toString()
+artempo[6]=strumento.toString()
+top.sys.d[2][top.sys.c[2]][0][4][questo]=artempo
+}
+Time.value=tempo
+Length.value=durata
+Strength.value=forza
+Pitch.value=pitch
+PitchTo.value=pitchto
+risult.innerHTML=top.sys.d[5][strumento][1]   
+</script>
