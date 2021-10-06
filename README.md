@@ -1,5 +1,7 @@
 logspira
 ========
+Please follow video instruction at: https://youtu.be/Ib5qIQjOOfU
+
 
 logaritmic spiral of sound 
 
