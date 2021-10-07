@@ -8,4 +8,4 @@ logaritmic spiral of sound
 
 
 first experiment on github
-for a software creating sounds
+for a software creating sounds based on an original data system
