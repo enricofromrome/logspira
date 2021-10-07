@@ -2,6 +2,7 @@ logspira
 ========
 Please follow video instruction at: https://youtu.be/Ib5qIQjOOfU
 
+use it at: https://enricofromrome.eu/edb6
 
 logaritmic spiral of sound 
 
